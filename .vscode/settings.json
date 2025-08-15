@@ -1,0 +1,6 @@
+{
+  "editor.defaultFormatter": "xaver.clang-format",
+  "[cpp]": {
+    "editor.formatOnSave": true
+  }
+}
