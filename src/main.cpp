@@ -1,11 +1,9 @@
+#include "Chip8.h"
+
 using namespace std;
 
 int main()
 {
-    return 0;
-}
-
-int testing()
-{
+    Chip8 chip8;
     return 0;
 }

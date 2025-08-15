@@ -32,12 +32,18 @@ target_link_libraries(
 include(GoogleTest)
 gtest_discover_tests(Chip8Tests)
 
+target_include_directories(Chip8Tests PRIVATE include)
 
 # Build
 add_executable(
     Chip8Wasm
     src/main.cpp
+    src/Chip8.cpp
+    src/Chip8CPU.cpp
+    src/Chip8Memory.cpp
 )
+
+target_include_directories(Chip8Wasm PRIVATE include)
 
 
 # Install
