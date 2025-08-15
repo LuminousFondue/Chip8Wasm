@@ -1,0 +1,32 @@
+# Build directories
+build/
+out/
+bin/
+lib/
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Compiled object files and binaries
+*.o
+*.obj
+*.so
+*.a
+*.dll
+*.exe
+*.out
+*.dylib
+
+# Debug files
+*.dSYM/
+*.log
+
+# Install output
+out/install/
+
+# VS Code
+.vscode/*
+!.vscode/settings.json

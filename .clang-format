@@ -1,0 +1,51 @@
+BasedOnStyle: LLVM
+Language: Cpp
+Standard: c++20
+
+# Indentation
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+
+# Braces & Formatting
+BreakBeforeBraces: Allman
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: InlineOnly
+
+# Spaces
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+SpacesInAngles: false
+SpacesInCStyleCastParentheses: false
+SpaceAfterCStyleCast: false
+
+# Pointers & References
+PointerAlignment: Left
+ReferenceAlignment: Left
+
+# Includes
+IncludeBlocks: Regroup
+SortIncludes: true
+IncludeCategories:
+  - Regex: '^<.*\.h>'
+    Priority: 1
+  - Regex: '^<.*>'
+    Priority: 2
+  - Regex: '.*'
+    Priority: 3
+
+# Line Length
+ColumnLimit: 100
+BreakStringLiterals: false
+
+# Comments
+ReflowComments: true
+SpacesBeforeTrailingComments: 1
+
+# Alignment
+AlignOperands: true
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
