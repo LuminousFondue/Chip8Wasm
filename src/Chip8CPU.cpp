@@ -179,10 +179,6 @@ void Chip8CPU::opcode_00E0(uint16_t opcode)
     spdlog::debug("Opcode: 00E0");
 }
 
-/**
- * @brief Opcode 0x00EE: Return from subroutine.
- * @param opcode The opcode to handle.
- */
 void Chip8CPU::opcode_00EE(uint16_t opcode)
 {
     /* TODO: implement 00EE (RET) */
@@ -200,91 +196,109 @@ void Chip8CPU::opcode_2NNN(uint16_t opcode)
     /* TODO: implement 2NNN (CALL addr) */
     spdlog::debug("Opcode: 2NNN");
 }
+
 void Chip8CPU::opcode_3XKK(uint16_t opcode)
 {
     /* TODO: implement 3XKK (SE Vx, byte) */
     spdlog::debug("Opcode: 3XKK");
 }
+
 void Chip8CPU::opcode_4XKK(uint16_t opcode)
 {
     /* TODO: implement 4XKK (SNE Vx, byte) */
     spdlog::debug("Opcode: 4XKK");
 }
+
 void Chip8CPU::opcode_5XY0(uint16_t opcode)
 {
     /* TODO: implement 5XY0 (SE Vx, Vy) */
     spdlog::debug("Opcode: 5XY0");
 }
+
 void Chip8CPU::opcode_6XKK(uint16_t opcode)
 {
     /* TODO: implement 6XKK (LD Vx, byte) */
     spdlog::debug("Opcode: 6XKK");
 }
+
 void Chip8CPU::opcode_7XKK(uint16_t opcode)
 {
     /* TODO: implement 7XKK (ADD Vx, byte) */
     spdlog::debug("Opcode: 7XKK");
 }
+
 void Chip8CPU::opcode_8XY0(uint16_t opcode)
 {
     /* TODO: implement 8XY0 (LD Vx, Vy) */
     spdlog::debug("Opcode: 8XY0");
 }
+
 void Chip8CPU::opcode_8XY1(uint16_t opcode)
 {
     /* TODO: implement 8XY1 (OR Vx, Vy) */
     spdlog::debug("Opcode: 8XY1");
 }
+
 void Chip8CPU::opcode_8XY2(uint16_t opcode)
 {
     /* TODO: implement 8XY2 (AND Vx, Vy) */
     spdlog::debug("Opcode: 8XY2");
 }
+
 void Chip8CPU::opcode_8XY3(uint16_t opcode)
 {
     /* TODO: implement 8XY3 (XOR Vx, Vy) */
     spdlog::debug("Opcode: 8XY3");
 }
+
 void Chip8CPU::opcode_8XY4(uint16_t opcode)
 {
     /* TODO: implement 8XY4 (ADD Vx, Vy) */
     spdlog::debug("Opcode: 8XY4");
 }
+
 void Chip8CPU::opcode_8XY5(uint16_t opcode)
 {
     /* TODO: implement 8XY5 (SUB Vx, Vy) */
     spdlog::debug("Opcode: 8XY5");
 }
+
 void Chip8CPU::opcode_8XY6(uint16_t opcode)
 {
     /* TODO: implement 8XY6 (SHR Vx {, Vy}) */
     spdlog::debug("Opcode: 8XY6");
 }
+
 void Chip8CPU::opcode_8XY7(uint16_t opcode)
 {
     /* TODO: implement 8XY7 (SUBN Vx, Vy) */
     spdlog::debug("Opcode: 8XY7");
 }
+
 void Chip8CPU::opcode_8XYE(uint16_t opcode)
 {
     /* TODO: implement 8XYE (SHL Vx {, Vy}) */
     spdlog::debug("Opcode: 8XYE");
 }
+
 void Chip8CPU::opcode_9XY0(uint16_t opcode)
 {
     /* TODO: implement 9XY0 (SNE Vx, Vy) */
     spdlog::debug("Opcode: 9XY0");
 }
+
 void Chip8CPU::opcode_ANNN(uint16_t opcode)
 {
     /* TODO: implement ANNN (LD I, addr) */
     spdlog::debug("Opcode: ANNN");
 }
+
 void Chip8CPU::opcode_BNNN(uint16_t opcode)
 {
     /* TODO: implement BNNN (JP V0, addr) */
     spdlog::debug("Opcode: BNNN");
 }
+
 void Chip8CPU::opcode_CXKK(uint16_t opcode)
 {
     /* TODO: implement CXKK (RND Vx, byte) */
