@@ -57,7 +57,7 @@ include(CTest)
 enable_testing()
 
 add_executable(
-    Chip8Tests
+    Chip8Tests 
     tests/Chip8MemoryTests.cpp
     tests/Chip8GraphicsDataTests.cpp
     tests/Chip8CPUTests.cpp
