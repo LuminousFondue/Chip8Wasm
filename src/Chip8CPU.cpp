@@ -29,4 +29,5 @@ void Chip8CPU::reset()
     I_  = 0;                                    // Reset index register
     std::fill(std::begin(V_), std::end(V_), 0); // Clear registers
     std::fill(std::begin(stack_), std::end(stack_), 0); // Clear stack
+    spdlog::debug("Chip8 CPU reset to initial state");
 }
