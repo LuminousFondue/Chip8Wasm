@@ -9,7 +9,6 @@ class Chip8
     Chip8();
     ~Chip8();
     void reset();
-    void loadROM();
 
   private:
     Chip8Memory memory_;
