@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstdio>
-
 #include "Chip8CPU.h"
 #include "Chip8Memory.h"
 

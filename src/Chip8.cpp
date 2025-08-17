@@ -1,11 +1,15 @@
 #include "Chip8.h"
 
+#include <spdlog/spdlog.h>
+
+#include <cstdio>
+
 Chip8::Chip8() : memory_(), cpu_(memory_)
 {
-    printf("Chip8 created.\n");
+    spdlog::debug("Chip8 Created");
 }
 
 Chip8::~Chip8()
 {
-    printf("Chip8 destroyed\n");
+    spdlog::debug("Chip8 Destroyed");
 }
