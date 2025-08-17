@@ -21,7 +21,7 @@ class Chip8MemoryException : public std::runtime_error
 class Chip8Memory
 {
   public:
-    static constexpr uint16_t MEMORY_SIZE = 4096;
+    static constexpr uint16_t MEMORY_SIZE = 4096; // 4KB of memory
 
     /**
      * @brief Constructs and initializes the Chip8 memory.
