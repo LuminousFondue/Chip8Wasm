@@ -2,9 +2,14 @@
 
 #include <cstdio>
 
+#include "Chip8Memory.h"
+
 class Chip8CPU
 {
   public:
-    Chip8CPU();
+    explicit Chip8CPU(Chip8Memory& memory);
     ~Chip8CPU();
+
+  private:
+    Chip8Memory& memory_;
 };

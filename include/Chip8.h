@@ -14,6 +14,6 @@ class Chip8
     void loadROM();
 
   private:
-    Chip8CPU    _cpu;
-    Chip8Memory _memory;
+    Chip8Memory memory_;
+    Chip8CPU    cpu_;
 };

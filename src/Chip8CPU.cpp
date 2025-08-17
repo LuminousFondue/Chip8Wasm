@@ -1,6 +1,6 @@
 #include "Chip8CPU.h"
 
-Chip8CPU::Chip8CPU()
+Chip8CPU::Chip8CPU(Chip8Memory& memory) : memory_(memory)
 {
     printf("Chip8 CPU created.\n");
 }
