@@ -48,8 +48,6 @@ add_executable(Chip8Wasm src/main.cpp)
 target_link_libraries(Chip8Wasm PRIVATE spdlog::spdlog Chip8Core)
 target_include_directories(Chip8Wasm PRIVATE include)
 
-target_compile_definitions(Chip8Wasm PRIVATE SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_INFO)
-
 # -----------------------------------------------------------------------------
 # Tests
 # -----------------------------------------------------------------------------
