@@ -310,56 +310,67 @@ void Chip8CPU::opcode_DXYN(uint16_t opcode)
     /* TODO: implement DXYN (DRW Vx, Vy, nibble) */
     spdlog::debug("Opcode: DXYN");
 }
+
 void Chip8CPU::opcode_EXA1(uint16_t opcode)
 {
     /* TODO: implement EXA1 (SKNP Vx) */
     spdlog::debug("Opcode: EXA1");
 }
+
 void Chip8CPU::opcode_EX9E(uint16_t opcode)
 {
     /* TODO: implement EX9E (SKP Vx) */
     spdlog::debug("Opcode: EX9E");
 }
+
 void Chip8CPU::opcode_FX07(uint16_t opcode)
 {
     /* TODO: implement FX07 (LD Vx, DT) */
     spdlog::debug("Opcode: FX07");
 }
+
 void Chip8CPU::opcode_FX0A(uint16_t opcode)
 {
     /* TODO: implement FX0A (LD Vx, K) */
     spdlog::debug("Opcode: FX0A");
 }
+
 void Chip8CPU::opcode_FX15(uint16_t opcode)
 {
     /* TODO: implement FX15 (LD DT, Vx) */
     spdlog::debug("Opcode: FX15");
 }
+
 void Chip8CPU::opcode_FX18(uint16_t opcode)
 {
     /* TODO: implement FX18 (LD ST, Vx) */
     spdlog::debug("Opcode: FX18");
 }
+
 void Chip8CPU::opcode_FX1E(uint16_t opcode)
 {
     /* TODO: implement FX1E (ADD I, Vx) */
     spdlog::debug("Opcode: FX1E");
 }
+
 void Chip8CPU::opcode_FX29(uint16_t opcode)
 {
     /* TODO: implement FX29 (LD F, Vx) */
     spdlog::debug("Opcode: FX29");
 }
+
 void Chip8CPU::opcode_FX33(uint16_t opcode)
 {
     /* TODO: implement FX33 (LD B, Vx) */
     spdlog::debug("Opcode: FX33");
 }
+
 void Chip8CPU::opcode_FX55(uint16_t opcode)
 {
     /* TODO: implement FX55 (LD [I], Vx) */
     spdlog::debug("Opcode: FX55");
 }
+
 void Chip8CPU::opcode_FX65(uint16_t opcode)
 {
     /* TODO: implement FX65 (LD Vx, [I]) */
