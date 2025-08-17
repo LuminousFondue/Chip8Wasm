@@ -39,6 +39,7 @@ add_library(Chip8Core STATIC
     src/Chip8CPU.cpp
 )
 target_include_directories(Chip8Core PRIVATE include)
+target_link_libraries(Chip8Core PRIVATE spdlog::spdlog)
 
 # -----------------------------------------------------------------------------
 # Main Executable
@@ -54,7 +55,7 @@ enable_testing()
 
 add_executable(Chip8Tests tests/Chip8MemoryTests.cpp)
 target_include_directories(Chip8Tests PRIVATE include)
-target_link_libraries(Chip8Tests PRIVATE GTest::gtest_main spdlog::spdlog Chip8Core)
+target_link_libraries(Chip8Tests PRIVATE GTest::gtest_main Chip8Core)
 
 include(GoogleTest)
 gtest_discover_tests(Chip8Tests)
