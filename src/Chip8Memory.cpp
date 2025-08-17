@@ -39,6 +39,18 @@ void Chip8Memory::write(uint16_t address, uint8_t value)
     spdlog::trace("Wrote value 0x{:x} to address 0x{:x}", value, address);
 }
 
+void Chip8Memory::write(uint16_t address, const std::vector<uint8_t>& data)
+{
+    if (address + data.size() > MEMORY_SIZE || address >= MEMORY_SIZE)
+    {
+        spdlog::critical("Attempted to write block to out of bounds address 0x{:x} (length: {})",
+                         address, data.size());
+        throw Chip8MemoryException(Chip8MemoryException::WRITE_OUT_OF_BOUNDS);
+    }
+    std::memcpy(memory_ + address, data.data(), data.size());
+    spdlog::trace("Wrote {} bytes to address 0x{:x}", data.size(), address);
+}
+
 uint8_t Chip8Memory::read(uint16_t address) const
 {
     if (address >= MEMORY_SIZE)
@@ -47,4 +59,20 @@ uint8_t Chip8Memory::read(uint16_t address) const
         throw Chip8MemoryException(Chip8MemoryException::READ_OUT_OF_BOUNDS);
     }
     return memory_[address];
+}
+
+std::vector<uint8_t> Chip8Memory::read(uint16_t address, size_t length) const
+{
+    if (address + length > MEMORY_SIZE || address >= MEMORY_SIZE)
+    {
+        spdlog::critical("Attempted to read block from out of bounds address 0x{:x} (length: {})",
+                         address, length);
+        throw Chip8MemoryException(Chip8MemoryException::READ_OUT_OF_BOUNDS);
+    }
+    return std::vector<uint8_t>(memory_ + address, memory_ + address + length);
+}
+
+std::vector<uint8_t> Chip8Memory::dump() const
+{
+    return std::vector<uint8_t>(memory_, memory_ + MEMORY_SIZE);
 }
