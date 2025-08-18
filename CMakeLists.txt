@@ -37,6 +37,7 @@ add_library(Chip8Core STATIC
     src/Chip8.cpp
     src/Chip8Memory.cpp
     src/Chip8CPU.cpp
+    src/Chip8GraphicsData.cpp
 )
 target_include_directories(Chip8Core PRIVATE include)
 target_link_libraries(Chip8Core PRIVATE spdlog::spdlog)
