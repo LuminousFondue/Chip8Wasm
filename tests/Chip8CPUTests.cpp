@@ -24,3 +24,18 @@ TEST_F(Chip8CPUTest, Initialization_Reset)
         EXPECT_EQ(cpu.getV(i), 0);
     }
 }
+
+TEST_F(Chip8CPUTest, opcode_00E0_test)
+{
+    // Turn on one pixel
+    graphics.setPixel(0, 0, 1);
+    EXPECT_EQ(graphics.getPixel(0, 0), 1);
+
+    // Write the opcode for clearing the screen
+    memory.write(0x200, 0x00);
+    memory.write(0x201, 0xE0);
+
+    // Execute the cycle
+    cpu.cycle();
+    EXPECT_EQ(graphics.getPixel(0, 0), 0);
+}
