@@ -5,8 +5,9 @@
 
 TEST(Chip8CPUTests, Initialization_Reset)
 {
-    Chip8Memory memory;
-    Chip8CPU    cpu(memory);
+    Chip8Memory       memory;
+    Chip8GraphicsData graphics;
+    Chip8CPU          cpu(memory, graphics);
 
     // Check initial state of CPU
     EXPECT_EQ(cpu.getPC(), 0x200); // Program counter should start at 0x200

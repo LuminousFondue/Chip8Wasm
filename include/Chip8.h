@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chip8CPU.h"
+#include "Chip8GraphicsData.h"
 #include "Chip8Memory.h"
 
 class Chip8
@@ -11,6 +12,7 @@ class Chip8
     void reset();
 
   private:
-    Chip8Memory memory_;
-    Chip8CPU    cpu_;
+    Chip8Memory       memory_;
+    Chip8GraphicsData graphics_;
+    Chip8CPU          cpu_;
 };

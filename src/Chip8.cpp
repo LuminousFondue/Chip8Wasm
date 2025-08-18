@@ -4,7 +4,7 @@
 
 #include <cstdio>
 
-Chip8::Chip8() : memory_(), cpu_(memory_)
+Chip8::Chip8() : memory_(), graphics_(), cpu_(memory_, graphics_)
 {
     spdlog::debug("Chip8 Created");
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 
+#include "Chip8GraphicsData.h"
 #include "Chip8Memory.h"
 
 class Chip8CPU
@@ -9,8 +10,9 @@ class Chip8CPU
     /**
      * @brief Constructs a Chip8CPU instance.
      * @param memory Reference to the Chip8Memory instance.
+     * @param graphics Reference to the Chip8GraphicsData instance.
      */
-    explicit Chip8CPU(Chip8Memory& memory);
+    explicit Chip8CPU(Chip8Memory& memory, Chip8GraphicsData& graphics);
 
     /**
      * @brief Destroys the Chip8CPU instance.
@@ -63,6 +65,9 @@ class Chip8CPU
     uint8_t  SP_;        // Stack pointer
     uint16_t stack_[16]; // Stack for subroutine calls
 
+    Chip8Memory&       memory_;
+    Chip8GraphicsData& graphics_;
+
     using OpcodeHandler = void (Chip8CPU::*)(uint16_t);
 
     std::array<OpcodeHandler, 16> main_opcode_table_;
@@ -70,8 +75,6 @@ class Chip8CPU
     std::array<OpcodeHandler, 16> _8_table;
     std::array<OpcodeHandler, 16> _E_table;
     std::array<OpcodeHandler, 16> _F_table;
-
-    Chip8Memory& memory_;
 
     void decodeOpcode(uint16_t opcode);
 
