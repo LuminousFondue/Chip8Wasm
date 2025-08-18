@@ -38,6 +38,17 @@ void Chip8CPU::reset()
 void Chip8CPU::initializeOpcodeTables()
 {
     spdlog::debug("Initializing opcode tables");
+    // Initialize all entries to invalidOpcode
+    for (auto& handler : main_opcode_table_)
+        handler = &Chip8CPU::invalidOpcode;
+    for (auto& handler : _0_table)
+        handler = &Chip8CPU::invalidOpcode;
+    for (auto& handler : _8_table)
+        handler = &Chip8CPU::invalidOpcode;
+    for (auto& handler : _E_table)
+        handler = &Chip8CPU::invalidOpcode;
+    for (auto& handler : _F_table)
+        handler = &Chip8CPU::invalidOpcode;
 
     // Initialize main opcode table
     main_opcode_table_[0x0] = &Chip8CPU::handle_0XXX;
@@ -86,6 +97,11 @@ void Chip8CPU::initializeOpcodeTables()
     _F_table[0x33] = &Chip8CPU::opcode_FX33;
     _F_table[0x55] = &Chip8CPU::opcode_FX55;
     _F_table[0x65] = &Chip8CPU::opcode_FX65;
+}
+
+void Chip8CPU::invalidOpcode(uint16_t opcode)
+{
+    spdlog::error("Invalid or unimplemented opcode: {:#04x}", opcode);
 }
 
 void Chip8CPU::decodeOpcode(uint16_t opcode)
@@ -179,8 +195,8 @@ void Chip8CPU::handle_FXXX(uint16_t opcode)
  */
 void Chip8CPU::opcode_00E0(uint16_t opcode)
 {
-    /* TODO: implement 00E0 (CLS) */
-    spdlog::debug("Opcode: 00E0");
+    spdlog::debug("Running Opcode: 00E0");
+    graphics_.clear();
 }
 
 /**

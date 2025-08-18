@@ -70,14 +70,14 @@ class Chip8CPU
 
     using OpcodeHandler = void (Chip8CPU::*)(uint16_t);
 
-    std::array<OpcodeHandler, 16> main_opcode_table_;
-    std::array<OpcodeHandler, 16> _0_table;
-    std::array<OpcodeHandler, 16> _8_table;
-    std::array<OpcodeHandler, 16> _E_table;
-    std::array<OpcodeHandler, 16> _F_table;
+    std::array<OpcodeHandler, 16>   main_opcode_table_;
+    std::array<OpcodeHandler, 16>   _0_table;
+    std::array<OpcodeHandler, 16>   _8_table;
+    std::array<OpcodeHandler, 16>   _E_table;
+    std::array<OpcodeHandler, 0x66> _F_table;
 
     void decodeOpcode(uint16_t opcode);
-
+    void invalidOpcode(uint16_t opcode);
     void initializeOpcodeTables();
 
     void handle_0XXX(uint16_t opcode);
