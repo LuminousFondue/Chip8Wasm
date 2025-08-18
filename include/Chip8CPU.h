@@ -42,13 +42,19 @@ class Chip8CPU
      */
     uint16_t getI() const { return I_; }
 
-#ifdef UNIT_TEST
-    // Expose private members for testing only
-    uint16_t& PC() { return PC_; }
-    uint8_t&  SP() { return SP_; }
-    uint16_t& I() { return I_; }
-    uint8_t*  V() { return V_; }
-#endif
+    /**
+     * @brief Gets the value of a specific register.
+     * @param index The index of the register (0-15).
+     * @return The value of the specified register.
+     */
+    uint8_t getV(size_t index) const
+    {
+        if (index < 16)
+        {
+            return V_[index];
+        }
+        throw std::out_of_range("Invalid register index");
+    }
 
   private:
     uint8_t  V_[16];     // General purpose registers
