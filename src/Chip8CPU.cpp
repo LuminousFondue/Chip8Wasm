@@ -248,8 +248,13 @@ void Chip8CPU::opcode_2NNN(uint16_t opcode)
  */
 void Chip8CPU::opcode_3XKK(uint16_t opcode)
 {
-    /* TODO: implement 3XKK (SE Vx, byte) */
-    spdlog::debug("Opcode: 3XKK");
+    spdlog::debug("Running Opcode: 3XKK");
+    uint8_t kk = opcode & 0xFF;
+    uint8_t x  = (opcode >> 8) & 0xF;
+    if (this->getV(x) == kk)
+    {
+        this->PC_ += 2;
+    }
 }
 
 /**

@@ -58,6 +58,21 @@ class Chip8CPU
         throw std::out_of_range("Invalid register index");
     }
 
+    /**
+     * @brief Sets the value of a specific register.
+     * @param index The index of the register (0-15).
+     * @param value The value to set.
+     */
+    void setV(size_t index, uint8_t value)
+    {
+        if (index < 16)
+        {
+            V_[index] = value;
+            return;
+        }
+        throw std::out_of_range("Invalid register index");
+    }
+
   private:
     uint8_t  V_[16];     // General purpose registers
     uint16_t I_;         // Index register
