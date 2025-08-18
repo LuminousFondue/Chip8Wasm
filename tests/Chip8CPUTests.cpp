@@ -60,7 +60,17 @@ TEST_F(Chip8CPUTest, opcode_1NNN_test)
 
 TEST_F(Chip8CPUTest, opcode_2NNN_test)
 {
-    FAIL() << "Not yet implemented";
+    EXPECT_EQ(cpu.getSP(), 0) << "Initial stack pointer should be 0";
+
+    memory.write(0x200, 0x22);
+    memory.write(0x201, 0x34);
+
+    // Execute the cycle
+    cpu.cycle();
+
+    // Check if the stack pointer was incremented and PC set correctly
+    EXPECT_EQ(cpu.getSP(), 1) << "Stack pointer should be incremented to 1";
+    EXPECT_EQ(cpu.getPC(), 0x234) << "Program counter should jump to 0x234";
 }
 
 TEST_F(Chip8CPUTest, opcode_3XNN_test)

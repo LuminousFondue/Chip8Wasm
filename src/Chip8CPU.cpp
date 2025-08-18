@@ -233,8 +233,11 @@ void Chip8CPU::opcode_1NNN(uint16_t opcode)
  */
 void Chip8CPU::opcode_2NNN(uint16_t opcode)
 {
-    /* TODO: implement 2NNN (CALL addr) */
-    spdlog::debug("Opcode: 2NNN");
+    spdlog::debug("Running Opcode: 2NNN");
+    uint16_t address = opcode & 0x0FFF;
+    this->SP_++;
+    this->stack_[this->SP_] = this->PC_;
+    this->PC_               = address;
 }
 
 /**
