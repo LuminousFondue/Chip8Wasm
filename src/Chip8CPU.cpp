@@ -265,8 +265,13 @@ void Chip8CPU::opcode_3XKK(uint16_t opcode)
  */
 void Chip8CPU::opcode_4XKK(uint16_t opcode)
 {
-    /* TODO: implement 4XKK (SNE Vx, byte) */
-    spdlog::debug("Opcode: 4XKK");
+    spdlog::debug("Running Opcode: 4XKK");
+    uint8_t kk = opcode & 0xFF;
+    uint8_t x  = (opcode >> 8) & 0xF;
+    if (this->getV(x) != kk)
+    {
+        this->PC_ += 2;
+    }
 }
 
 /**

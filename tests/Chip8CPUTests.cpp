@@ -92,7 +92,20 @@ TEST_F(Chip8CPUTest, opcode_3XNN_test)
 
 TEST_F(Chip8CPUTest, opcode_4XNN_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0x44);
+    memory.write(0x201, 0x45);
+    cpu.setV(4, 0x45);
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should not skip next instruction";
+
+    cpu.reset();
+    cpu.setV(4, 0x22);
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getPC(), 0x204) << "Program counter should skip next instruction";
 }
 
 TEST_F(Chip8CPUTest, opcode_5XY0_test)
