@@ -31,7 +31,6 @@ TEST_F(Chip8CPUTest, opcode_00E0_test)
     graphics.setPixel(0, 0, 1);
     EXPECT_EQ(graphics.getPixel(0, 0), 1) << "Pixel should be on";
 
-    // Write the opcode for clearing the screen
     memory.write(0x200, 0x00);
     memory.write(0x201, 0xE0);
 
@@ -47,7 +46,16 @@ TEST_F(Chip8CPUTest, opcode_00EE_test)
 
 TEST_F(Chip8CPUTest, opcode_1NNN_test)
 {
-    FAIL() << "Not yet implemented";
+    EXPECT_EQ(cpu.getPC(), 0x200) << "Initial program counter should be 0x200";
+
+    memory.write(0x200, 0x12);
+    memory.write(0x201, 0x34);
+
+    // Execute the cycle
+    cpu.cycle();
+
+    // Check if the program counter was set correctly
+    EXPECT_EQ(cpu.getPC(), 0x234) << "Program counter should jump to 0x234";
 }
 
 TEST_F(Chip8CPUTest, opcode_2NNN_test)

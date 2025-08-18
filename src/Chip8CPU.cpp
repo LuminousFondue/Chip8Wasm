@@ -219,8 +219,9 @@ void Chip8CPU::opcode_00EE(uint16_t opcode)
  */
 void Chip8CPU::opcode_1NNN(uint16_t opcode)
 {
-    /* TODO: implement 1NNN (JP addr) */
-    spdlog::debug("Opcode: 1NNN");
+    spdlog::debug("Running Opcode: 1NNN");
+    uint16_t address = opcode & 0x0FFF;
+    this->PC_        = address;
 }
 
 /**
