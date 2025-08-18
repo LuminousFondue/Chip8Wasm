@@ -52,6 +52,7 @@ target_include_directories(Chip8Wasm PRIVATE include)
 # -----------------------------------------------------------------------------
 # Tests
 # -----------------------------------------------------------------------------
+include(CTest)
 enable_testing()
 
 add_executable(
