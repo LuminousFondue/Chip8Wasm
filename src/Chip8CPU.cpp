@@ -580,8 +580,9 @@ void Chip8CPU::opcode_FX18(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX1E(uint16_t opcode)
 {
-    /* TODO: implement FX1E (ADD I, Vx) */
-    spdlog::debug("Opcode: FX1E");
+    spdlog::debug("Running Opcode: FX1E");
+    uint8_t x = this->getNibble(opcode, 2);
+    this->setI(this->getI() + this->getV(x));
 }
 
 /**
