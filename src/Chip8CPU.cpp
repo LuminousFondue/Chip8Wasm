@@ -388,8 +388,12 @@ void Chip8CPU::opcode_8XY3(uint16_t opcode)
  */
 void Chip8CPU::opcode_8XY4(uint16_t opcode)
 {
-    /* TODO: implement 8XY4 (ADD Vx, Vy) */
-    spdlog::debug("Opcode: 8XY4");
+    spdlog::debug("Running Opcode: 8XY4");
+    uint8_t  x   = this->getNibble(opcode, 2);
+    uint8_t  y   = this->getNibble(opcode, 1);
+    uint16_t sum = this->getV(x) + this->getV(y);
+    this->setV(x, sum & 0xFF);
+    this->setV(0xF, sum > 0xFF ? 1 : 0);
 }
 
 /**
