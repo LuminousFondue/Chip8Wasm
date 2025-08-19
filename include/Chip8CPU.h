@@ -95,6 +95,8 @@ class Chip8CPU
     void invalidOpcode(uint16_t opcode);
     void initializeOpcodeTables();
 
+    static uint8_t getNibble(uint16_t opcode, int nibbleIndex);
+
     void handle_0XXX(uint16_t opcode);
     void handle_8XXX(uint16_t opcode);
     void handle_EXXX(uint16_t opcode);

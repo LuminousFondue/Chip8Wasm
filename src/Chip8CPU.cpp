@@ -35,6 +35,11 @@ void Chip8CPU::reset()
     spdlog::debug("Chip8 CPU reset to initial state");
 }
 
+uint8_t Chip8CPU::getNibble(uint16_t opcode, int nibbleIndex)
+{
+    return (opcode >> (nibbleIndex * 4)) & 0xF;
+}
+
 void Chip8CPU::initializeOpcodeTables()
 {
     spdlog::debug("Initializing opcode tables");
@@ -250,7 +255,7 @@ void Chip8CPU::opcode_3XKK(uint16_t opcode)
 {
     spdlog::debug("Running Opcode: 3XKK");
     uint8_t kk = opcode & 0xFF;
-    uint8_t x  = (opcode >> 8) & 0xF;
+    uint8_t x  = this->getNibble(opcode, 2);
     if (this->getV(x) == kk)
     {
         this->PC_ += 2;
@@ -267,7 +272,7 @@ void Chip8CPU::opcode_4XKK(uint16_t opcode)
 {
     spdlog::debug("Running Opcode: 4XKK");
     uint8_t kk = opcode & 0xFF;
-    uint8_t x  = (opcode >> 8) & 0xF;
+    uint8_t x  = this->getNibble(opcode, 2);
     if (this->getV(x) != kk)
     {
         this->PC_ += 2;
@@ -283,8 +288,8 @@ void Chip8CPU::opcode_4XKK(uint16_t opcode)
 void Chip8CPU::opcode_5XY0(uint16_t opcode)
 {
     spdlog::debug("Running Opcode: 5XY0");
-    uint8_t x = (opcode >> 8) & 0xF;
-    uint8_t y = (opcode >> 4) & 0xF;
+    uint8_t x = this->getNibble(opcode, 2);
+    uint8_t y = this->getNibble(opcode, 1);
     if (this->getV(x) == this->getV(y))
     {
         this->PC_ += 2;
@@ -299,7 +304,7 @@ void Chip8CPU::opcode_5XY0(uint16_t opcode)
 void Chip8CPU::opcode_6XKK(uint16_t opcode)
 {
     spdlog::debug("Running Opcode: 6XKK");
-    uint8_t x  = (opcode >> 8) & 0xF;
+    uint8_t x  = this->getNibble(opcode, 2);
     uint8_t kk = opcode & 0xFF;
     this->setV(x, kk);
 }
@@ -313,7 +318,7 @@ void Chip8CPU::opcode_6XKK(uint16_t opcode)
 void Chip8CPU::opcode_7XKK(uint16_t opcode)
 {
     spdlog::debug("Running Opcode: 7XKK");
-    uint8_t x  = (opcode >> 8) & 0xF;
+    uint8_t x  = this->getNibble(opcode, 2);
     uint8_t kk = opcode & 0xFF;
     this->setV(x, this->getV(x) + kk);
 }
