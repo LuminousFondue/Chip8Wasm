@@ -368,14 +368,14 @@ void Chip8CPU::opcode_8XY2(uint16_t opcode)
  * 8XY3: XOR Vx, Vy - Set Vx = Vx XOR Vy
  *
  * Performs a bitwise XOR on the values of Vx and Vy,
- * then stores the result in Vx. A bitwise XOR compares the
- * corresponding bits from two values, and if the bits are different,
- * then the same bit in the result is 1. Otherwise, it is 0.
+ * then stores the result in Vx.
  */
 void Chip8CPU::opcode_8XY3(uint16_t opcode)
 {
-    /* TODO: implement 8XY3 (XOR Vx, Vy) */
-    spdlog::debug("Opcode: 8XY3");
+    spdlog::debug("Running Opcode: 8XY3");
+    uint8_t x = this->getNibble(opcode, 2);
+    uint8_t y = this->getNibble(opcode, 1);
+    this->setV(x, this->getV(x) ^ this->getV(y));
 }
 
 /**
