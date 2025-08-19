@@ -605,8 +605,12 @@ void Chip8CPU::opcode_FX29(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX33(uint16_t opcode)
 {
-    /* TODO: implement FX33 (LD B, Vx) */
-    spdlog::debug("Opcode: FX33");
+    spdlog::debug("Running Opcode: FX33");
+    uint8_t x     = this->getNibble(opcode, 2);
+    uint8_t value = this->getV(x);
+    memory_.write(this->getI(), (value / 100) % 10);
+    memory_.write(this->getI() + 1, (value / 10) % 10);
+    memory_.write(this->getI() + 2, value % 10);
 }
 
 /**
