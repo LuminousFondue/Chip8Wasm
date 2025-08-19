@@ -1,6 +1,7 @@
 #include "Chip8GraphicsData.h"
 
 #include <cstring>
+#include <iostream>
 
 Chip8GraphicsData::Chip8GraphicsData()
 {
@@ -43,4 +44,16 @@ std::vector<uint32_t> Chip8GraphicsData::dumpFrameBuffer() const
 {
     return std::vector<uint32_t>(framebuffer_,
                                  framebuffer_ + sizeof(framebuffer_) / sizeof(uint32_t));
+}
+
+void Chip8GraphicsData::printScreen() const
+{
+    for (int y = 0; y < FRAMEBUFFER_HEIGHT; ++y)
+    {
+        for (int x = 0; x < FRAMEBUFFER_WIDTH; ++x)
+        {
+            std::cout << (getPixel(x, y) ? "#" : "-");
+        }
+        std::cout << std::endl;
+    }
 }
