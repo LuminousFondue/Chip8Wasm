@@ -459,8 +459,9 @@ void Chip8CPU::opcode_9XY0(uint16_t opcode)
  */
 void Chip8CPU::opcode_ANNN(uint16_t opcode)
 {
-    /* TODO: implement ANNN (LD I, addr) */
-    spdlog::debug("Opcode: ANNN");
+    spdlog::debug("Running Opcode: ANNN");
+    uint16_t address = opcode & 0x0FFF;
+    this->I_         = address;
 }
 
 /**
