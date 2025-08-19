@@ -538,13 +538,21 @@ TEST_F(Chip8CPUTest, opcode_BNNN_test)
 }
 
 /**
- * @brief Test the CXNN opcode (RND Vx, NN - Set Vx = random byte AND NN).
+ * @brief Test the CXKK opcode (RND Vx, KK - Set Vx = random byte AND KK).
  *
- * This test verifies that executing the CXNN opcode sets Vx to a random byte ANDed with NN.
+ * This test verifies that executing the CXKK opcode sets Vx to a random byte ANDed with KK.
  */
-TEST_F(Chip8CPUTest, opcode_CXNN_test)
+TEST_F(Chip8CPUTest, opcode_CXKK_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xC1);
+    memory.write(0x201, 0x2E);
+
+    EXPECT_EQ(cpu.getV(1), 0) << "V[1] should be equal to 0 before execution";
+
+    cpu.cycle();
+
+    EXPECT_LE(cpu.getV(1), 0x2E) << "V[1] should be less than or equal to 0x2E after execution";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
 }
 
 /**
