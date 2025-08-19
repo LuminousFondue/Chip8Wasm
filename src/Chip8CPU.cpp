@@ -148,8 +148,7 @@ void Chip8CPU::handle_8XXX(uint16_t opcode)
 {
     spdlog::debug("Handling 8XXX opcode: {:#04x}", opcode);
 
-    // Extract the fourth nibble to determine the specific 8XXX opcode
-    uint8_t sub_opcode = (opcode >> 4) & 0x000F;
+    uint8_t sub_opcode = opcode & 0x000F;
 
     if (sub_opcode < _8_table.size())
     {
@@ -330,8 +329,10 @@ void Chip8CPU::opcode_7XKK(uint16_t opcode)
  */
 void Chip8CPU::opcode_8XY0(uint16_t opcode)
 {
-    /* TODO: implement 8XY0 (LD Vx, Vy) */
-    spdlog::debug("Opcode: 8XY0");
+    spdlog::debug("Running Opcode: 8XY0");
+    uint8_t x = this->getNibble(opcode, 2);
+    uint8_t y = this->getNibble(opcode, 1);
+    this->setV(x, this->getV(y));
 }
 
 /**

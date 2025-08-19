@@ -159,9 +159,26 @@ TEST_F(Chip8CPUTest, opcode_7XNN_test)
     EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
 }
 
+/**
+ * 8XY0: LD Vx, Vy - Set Vx = Vy
+ *
+ * Stores the value of register Vy in register Vx.
+ */
 TEST_F(Chip8CPUTest, opcode_8XY0_test)
 {
-    FAIL() << "Not yet implemented";
+    cpu.setV(0, 0x42);
+    cpu.setV(2, 0x99);
+
+    EXPECT_EQ(cpu.getV(0), 0x42) << "V[0] should be equal to 0x42";
+    EXPECT_EQ(cpu.getV(2), 0x99) << "V[2] should be equal to 0x99";
+
+    memory.write(0x200, 0x80);
+    memory.write(0x201, 0x20);
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(0), 0x99) << "V[0] should be equal to V[2]";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
 }
 
 TEST_F(Chip8CPUTest, opcode_8XY1_test)
