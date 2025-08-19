@@ -165,7 +165,7 @@ void Chip8CPU::handle_EXXX(uint16_t opcode)
     spdlog::debug("Handling EXXX opcode: {:#04x}", opcode);
 
     // Extract the fourth nibble to determine the specific EXXX opcode
-    uint8_t sub_opcode = (opcode >> 4) & 0x000F;
+    uint8_t sub_opcode = opcode & 0x000F;
 
     if (sub_opcode < _E_table.size())
     {
