@@ -144,7 +144,19 @@ TEST_F(Chip8CPUTest, opcode_6XNN_test)
 
 TEST_F(Chip8CPUTest, opcode_7XNN_test)
 {
-    FAIL() << "Not yet implemented";
+    EXPECT_EQ(cpu.getV(3), 0) << "V[3] should be equal to 0";
+
+    cpu.setV(3, 0x4B);
+
+    EXPECT_EQ(cpu.getV(3), 0x4B) << "V[3] should be equal to 0x4B";
+
+    memory.write(0x200, 0x73);
+    memory.write(0x201, 0x25);
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(3), 0x70) << "V[3] should be equal to 0x70";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
 }
 
 TEST_F(Chip8CPUTest, opcode_8XY0_test)
