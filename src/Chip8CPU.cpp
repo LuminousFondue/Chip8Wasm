@@ -182,7 +182,7 @@ void Chip8CPU::handle_FXXX(uint16_t opcode)
     spdlog::debug("Handling FXXX opcode: {:#04x}", opcode);
 
     // Extract the fourth nibble to determine the specific FXXX opcode
-    uint8_t sub_opcode = (opcode >> 4) & 0x000F;
+    uint8_t sub_opcode = opcode & 0x00FF;
 
     if (sub_opcode < _F_table.size())
     {
@@ -629,6 +629,10 @@ void Chip8CPU::opcode_FX55(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX65(uint16_t opcode)
 {
-    /* TODO: implement FX65 (LD Vx, [I]) */
-    spdlog::debug("Opcode: FX65");
+    spdlog::debug("Running Opcode: FX65");
+    uint8_t x = this->getNibble(opcode, 2);
+    for (uint8_t i = 0; i <= x; ++i)
+    {
+        this->setV(i, memory_.read(this->getI() + i));
+    }
 }
