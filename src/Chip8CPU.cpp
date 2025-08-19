@@ -282,8 +282,13 @@ void Chip8CPU::opcode_4XKK(uint16_t opcode)
  */
 void Chip8CPU::opcode_5XY0(uint16_t opcode)
 {
-    /* TODO: implement 5XY0 (SE Vx, Vy) */
-    spdlog::debug("Opcode: 5XY0");
+    spdlog::debug("Running Opcode: 5XY0");
+    uint8_t x = (opcode >> 8) & 0xF;
+    uint8_t y = (opcode >> 4) & 0xF;
+    if (this->getV(x) == this->getV(y))
+    {
+        this->PC_ += 2;
+    }
 }
 
 /**
