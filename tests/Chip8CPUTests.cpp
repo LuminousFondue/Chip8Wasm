@@ -32,12 +32,12 @@ TEST_F(Chip8CPUTest, Initialization_Reset)
  */
 TEST_F(Chip8CPUTest, opcode_00E0_test)
 {
+    memory.write(0x200, 0x00);
+    memory.write(0x201, 0xE0);
+
     // Turn on one pixel
     graphics.setPixel(0, 0, 1);
     EXPECT_EQ(graphics.getPixel(0, 0), 1) << "Pixel should be on";
-
-    memory.write(0x200, 0x00);
-    memory.write(0x201, 0xE0);
 
     // Execute the cycle
     cpu.cycle();
@@ -64,10 +64,10 @@ TEST_F(Chip8CPUTest, opcode_00EE_test)
  */
 TEST_F(Chip8CPUTest, opcode_1NNN_test)
 {
-    EXPECT_EQ(cpu.getPC(), 0x200) << "Initial program counter should be 0x200";
-
     memory.write(0x200, 0x12);
     memory.write(0x201, 0x34);
+
+    EXPECT_EQ(cpu.getPC(), 0x200) << "Initial program counter should be 0x200";
 
     // Execute the cycle
     cpu.cycle();
@@ -85,10 +85,10 @@ TEST_F(Chip8CPUTest, opcode_1NNN_test)
  */
 TEST_F(Chip8CPUTest, opcode_2NNN_test)
 {
-    EXPECT_EQ(cpu.getSP(), 0) << "Initial stack pointer should be 0";
-
     memory.write(0x200, 0x22);
     memory.write(0x201, 0x34);
+
+    EXPECT_EQ(cpu.getSP(), 0) << "Initial stack pointer should be 0";
 
     cpu.cycle();
 
@@ -107,6 +107,7 @@ TEST_F(Chip8CPUTest, opcode_3XNN_test)
 {
     memory.write(0x200, 0x34);
     memory.write(0x201, 0x45);
+
     cpu.setV(4, 0x45);
 
     cpu.cycle();
@@ -130,6 +131,7 @@ TEST_F(Chip8CPUTest, opcode_4XNN_test)
 {
     memory.write(0x200, 0x44);
     memory.write(0x201, 0x45);
+
     cpu.setV(4, 0x45);
 
     cpu.cycle();
@@ -154,6 +156,7 @@ TEST_F(Chip8CPUTest, opcode_5XY0_test)
 {
     memory.write(0x200, 0x54);
     memory.write(0x201, 0x50);
+
     cpu.setV(4, 0x45);
     cpu.setV(5, 0x45);
 
@@ -177,10 +180,10 @@ TEST_F(Chip8CPUTest, opcode_5XY0_test)
  */
 TEST_F(Chip8CPUTest, opcode_6XNN_test)
 {
-    EXPECT_EQ(cpu.getV(2), 0) << "V[2] should be equal to 0";
-
     memory.write(0x200, 0x62);
     memory.write(0x201, 0xDE);
+
+    EXPECT_EQ(cpu.getV(2), 0) << "V[2] should be equal to 0";
 
     cpu.cycle();
 
@@ -195,14 +198,11 @@ TEST_F(Chip8CPUTest, opcode_6XNN_test)
  */
 TEST_F(Chip8CPUTest, opcode_7XNN_test)
 {
-    EXPECT_EQ(cpu.getV(3), 0) << "V[3] should be equal to 0";
-
-    cpu.setV(3, 0x4B);
-
-    EXPECT_EQ(cpu.getV(3), 0x4B) << "V[3] should be equal to 0x4B";
-
     memory.write(0x200, 0x73);
     memory.write(0x201, 0x25);
+
+    cpu.setV(3, 0x4B);
+    EXPECT_EQ(cpu.getV(3), 0x4B) << "V[3] should be equal to 0x4B";
 
     cpu.cycle();
 
@@ -217,14 +217,13 @@ TEST_F(Chip8CPUTest, opcode_7XNN_test)
  */
 TEST_F(Chip8CPUTest, opcode_8XY0_test)
 {
-    cpu.setV(0, 0x42);
-    cpu.setV(2, 0x99);
-
-    EXPECT_EQ(cpu.getV(0), 0x42) << "V[0] should be equal to 0x42";
-    EXPECT_EQ(cpu.getV(2), 0x99) << "V[2] should be equal to 0x99";
-
     memory.write(0x200, 0x80);
     memory.write(0x201, 0x20);
+
+    cpu.setV(0, 0x42);
+    cpu.setV(2, 0x99);
+    EXPECT_EQ(cpu.getV(0), 0x42) << "V[0] should be equal to 0x42";
+    EXPECT_EQ(cpu.getV(2), 0x99) << "V[2] should be equal to 0x99";
 
     cpu.cycle();
 
@@ -239,7 +238,18 @@ TEST_F(Chip8CPUTest, opcode_8XY0_test)
  */
 TEST_F(Chip8CPUTest, opcode_8XY1_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0x81);
+    memory.write(0x201, 0x21);
+
+    cpu.setV(1, 0x42);
+    cpu.setV(2, 0x99);
+    EXPECT_EQ(cpu.getV(1), 0x42) << "V[1] should be equal to 0x42";
+    EXPECT_EQ(cpu.getV(2), 0x99) << "V[2] should be equal to 0x99";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(1), 0xDB) << "V[1] should be equal to V[0] OR V[2]";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
 }
 
 /**
@@ -249,7 +259,18 @@ TEST_F(Chip8CPUTest, opcode_8XY1_test)
  */
 TEST_F(Chip8CPUTest, opcode_8XY2_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0x81);
+    memory.write(0x201, 0x22);
+
+    cpu.setV(1, 0x42);
+    cpu.setV(2, 0x99);
+    EXPECT_EQ(cpu.getV(1), 0x42) << "V[1] should be equal to 0x42";
+    EXPECT_EQ(cpu.getV(2), 0x99) << "V[2] should be equal to 0x99";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(1), 0x00) << "V[1] should be equal to V[1] AND V[2]";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
 }
 
 /**
@@ -259,7 +280,18 @@ TEST_F(Chip8CPUTest, opcode_8XY2_test)
  */
 TEST_F(Chip8CPUTest, opcode_8XY3_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0x81);
+    memory.write(0x201, 0x23);
+
+    cpu.setV(1, 0x42);
+    cpu.setV(2, 0x99);
+    EXPECT_EQ(cpu.getV(1), 0x42) << "V[1] should be equal to 0x42";
+    EXPECT_EQ(cpu.getV(2), 0x99) << "V[2] should be equal to 0x99";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(1), 0xDB) << "V[1] should be equal to V[1] XOR V[2]";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
 }
 
 /**
@@ -269,7 +301,32 @@ TEST_F(Chip8CPUTest, opcode_8XY3_test)
  */
 TEST_F(Chip8CPUTest, opcode_8XY4_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0x81);
+    memory.write(0x201, 0x24);
+
+    cpu.setV(1, 0xFF);
+    cpu.setV(2, 0x45);
+    EXPECT_EQ(cpu.getV(1), 0xFF) << "V[1] should be equal to 0xFF";
+    EXPECT_EQ(cpu.getV(2), 0x45) << "V[2] should be equal to 0x45";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(1), 0x44) << "V[1] should be equal to V[1] + V[2]";
+    EXPECT_EQ(cpu.getV(0xF), 1) << "VF should be set to 1 (carry)";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
+
+    cpu.reset();
+
+    cpu.setV(1, 0x20);
+    cpu.setV(2, 0x30);
+    EXPECT_EQ(cpu.getV(1), 0x20) << "V[1] should be equal to 0x20";
+    EXPECT_EQ(cpu.getV(2), 0x30) << "V[2] should be equal to 0x30";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(1), 0x50) << "V[1] should be equal to V[1] + V[2]";
+    EXPECT_EQ(cpu.getV(0xF), 0) << "VF should be set to 0 (no carry)";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
 }
 
 /**
@@ -280,7 +337,32 @@ TEST_F(Chip8CPUTest, opcode_8XY4_test)
  */
 TEST_F(Chip8CPUTest, opcode_8XY5_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0x81);
+    memory.write(0x201, 0x25);
+
+    cpu.setV(1, 0x20);
+    cpu.setV(2, 0x30);
+    EXPECT_EQ(cpu.getV(1), 0x20) << "V[1] should be equal to 0x20";
+    EXPECT_EQ(cpu.getV(2), 0x30) << "V[2] should be equal to 0x30";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(1), 0xF0) << "V[1] should be equal to V[1] - V[2]";
+    EXPECT_EQ(cpu.getV(0xF), 0) << "VF should be set to 0 (borrow)";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
+
+    cpu.reset();
+
+    cpu.setV(1, 0x30);
+    cpu.setV(2, 0x20);
+    EXPECT_EQ(cpu.getV(1), 0x30) << "V[1] should be equal to 0x30";
+    EXPECT_EQ(cpu.getV(2), 0x20) << "V[2] should be equal to 0x20";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(1), 0x10) << "V[1] should be equal to V[1] - V[2]";
+    EXPECT_EQ(cpu.getV(0xF), 1) << "VF should be set to 1 (no borrow)";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
 }
 
 /**
@@ -291,7 +373,28 @@ TEST_F(Chip8CPUTest, opcode_8XY5_test)
  */
 TEST_F(Chip8CPUTest, opcode_8XY6_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0x81);
+    memory.write(0x201, 0x26);
+
+    cpu.setV(1, 0x25);
+    EXPECT_EQ(cpu.getV(1), 0x25) << "V[1] should be equal to 0x25";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(1), 0x12) << "V[1] should be equal to V[1] SHR 1";
+    EXPECT_EQ(cpu.getV(0xF), 1) << "VF should be set to 1";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
+
+    cpu.reset();
+
+    cpu.setV(1, 0x12);
+    EXPECT_EQ(cpu.getV(1), 0x12) << "V[1] should be equal to 0x12";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(1), 0x09) << "V[1] should be equal to V[1] SHR 1";
+    EXPECT_EQ(cpu.getV(0xF), 0) << "VF should be set to 0";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
 }
 
 /**
@@ -299,10 +402,37 @@ TEST_F(Chip8CPUTest, opcode_8XY6_test)
  *
  * This test verifies that executing the 8XY7 opcode sets Vx to Vy minus Vx and sets VF if there is
  * no borrow.
+ * If Vy > Vx, then VF is set to 1, otherwise 0.
+ * Then Vx is subtracted from Vy, and the results stored in Vx.
  */
 TEST_F(Chip8CPUTest, opcode_8XY7_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0x81);
+    memory.write(0x201, 0x27);
+
+    cpu.setV(1, 0x10);
+    cpu.setV(2, 0x30);
+    EXPECT_EQ(cpu.getV(1), 0x10) << "V[1] should be equal to 0x10";
+    EXPECT_EQ(cpu.getV(2), 0x30) << "V[2] should be equal to 0x30";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(1), 0x20) << "V[1] should be equal to 0x20";
+    EXPECT_EQ(cpu.getV(0xF), 1) << "VF should be set to 1";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
+
+    cpu.reset();
+
+    cpu.setV(1, 0x30);
+    cpu.setV(2, 0x10);
+    EXPECT_EQ(cpu.getV(1), 0x30) << "V[1] should be equal to 0x30";
+    EXPECT_EQ(cpu.getV(2), 0x10) << "V[2] should be equal to 0x10";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(1), 0xE0) << "V[1] should be equal to 0xE0";
+    EXPECT_EQ(cpu.getV(0xF), 0) << "VF should be set to 0";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
 }
 
 /**
@@ -313,18 +443,60 @@ TEST_F(Chip8CPUTest, opcode_8XY7_test)
  */
 TEST_F(Chip8CPUTest, opcode_8XYE_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0x81);
+    memory.write(0x201, 0x2E);
+
+    cpu.setV(1, 0x92);
+    EXPECT_EQ(cpu.getV(1), 0x92) << "V[1] should be equal to 0x92";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(0xF), 1) << "V[F] should be equal to 0x01";
+    EXPECT_EQ(cpu.getV(1), 0x24) << "V[1] should be equal to 0x24";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
+
+    cpu.reset();
+
+    cpu.setV(1, 0x24);
+    EXPECT_EQ(cpu.getV(1), 0x24) << "V[1] should be equal to 0x24";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(0xF), 0) << "V[F] should be equal to 0x00";
+    EXPECT_EQ(cpu.getV(1), 0x48) << "V[1] should be equal to 0x24";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
 }
 
 /**
  * @brief Test the 9XY0 opcode (SNE Vx, Vy - Skip next instruction if Vx != Vy).
  *
- * This test verifies that executing the 9XY0 opcode skips the next instruction if Vx does not equal
- * Vy.
+ * This test verifies that executing the 9XY0 opcode skips the next instruction if Vx does not
+ * equal Vy.
  */
 TEST_F(Chip8CPUTest, opcode_9XY0_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0x91);
+    memory.write(0x201, 0x20);
+
+    cpu.setV(1, 0x22);
+    cpu.setV(2, 0x22);
+    EXPECT_EQ(cpu.getV(1), 0x22) << "V[1] should be equal to 0x22";
+    EXPECT_EQ(cpu.getV(2), 0x22) << "V[1] should be equal to 0x22";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
+
+    cpu.reset();
+
+    cpu.setV(1, 0x22);
+    cpu.setV(2, 0x24);
+    EXPECT_EQ(cpu.getV(1), 0x22) << "V[1] should be equal to 0x22";
+    EXPECT_EQ(cpu.getV(2), 0x24) << "V[2] should be equal to 0x24";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getPC(), 0x204) << "Program counter should be incremented by 4";
 }
 
 /**
@@ -335,7 +507,15 @@ TEST_F(Chip8CPUTest, opcode_9XY0_test)
  */
 TEST_F(Chip8CPUTest, opcode_ANNN_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xA1);
+    memory.write(0x201, 0x23);
+
+    EXPECT_EQ(cpu.getI(), 0) << "Initial index register I should be 0";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getI(), 0x123) << "I should be equal to 0x123";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
 }
 
 /**
@@ -345,7 +525,16 @@ TEST_F(Chip8CPUTest, opcode_ANNN_test)
  */
 TEST_F(Chip8CPUTest, opcode_BNNN_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xB2);
+    memory.write(0x201, 0x23);
+
+    cpu.setV(0, 0x10);
+    EXPECT_EQ(cpu.getV(0), 0x10) << "V[0] should be equal to 0x10";
+    EXPECT_EQ(cpu.getPC(), 0x200) << "Initial program counter should be 0x200";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getPC(), 0x233) << "Program counter should be 0x233 (NNN + V[0])";
 }
 
 /**
@@ -361,8 +550,8 @@ TEST_F(Chip8CPUTest, opcode_CXNN_test)
 /**
  * @brief Test the DXYN opcode (DRW Vx, Vy, N - Display/draw sprite).
  *
- * This test verifies that executing the DXYN opcode draws a sprite at coordinate (Vx, Vy) with N
- * bytes of sprite data.
+ * This test verifies that executing the DXYN opcode draws a sprite at coordinate (Vx, Vy) with
+ * N bytes of sprite data.
  */
 TEST_F(Chip8CPUTest, opcode_DXYN_test)
 {
@@ -382,8 +571,8 @@ TEST_F(Chip8CPUTest, opcode_EX9E_test)
 }
 
 /**
- * @brief Test the EXA1 opcode (SKNP Vx - Skip next instruction if key with the value of Vx is not
- * pressed).
+ * @brief Test the EXA1 opcode (SKNP Vx - Skip next instruction if key with the value of Vx is
+ * not pressed).
  *
  * This test verifies that executing the EXA1 opcode skips the next instruction if the key
  * corresponding to Vx is not pressed.
@@ -404,10 +593,11 @@ TEST_F(Chip8CPUTest, opcode_FX07_test)
 }
 
 /**
- * @brief Test the FX0A opcode (LD Vx, K - Wait for a key press, store the value of the key in Vx).
+ * @brief Test the FX0A opcode (LD Vx, K - Wait for a key press, store the value of the key in
+ * Vx).
  *
- * This test verifies that executing the FX0A opcode waits for a key press and stores the key value
- * in Vx.
+ * This test verifies that executing the FX0A opcode waits for a key press and stores the key
+ * value in Vx.
  */
 TEST_F(Chip8CPUTest, opcode_FX0A_test)
 {
@@ -441,14 +631,24 @@ TEST_F(Chip8CPUTest, opcode_FX18_test)
  */
 TEST_F(Chip8CPUTest, opcode_FX1E_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xF2);
+    memory.write(0x201, 0x1E);
+
+    cpu.setV(2, 0x10);
+    cpu.setI(0x100);
+    EXPECT_EQ(cpu.getV(2), 0x10) << "V[2] should be equal to 0x10";
+    EXPECT_EQ(cpu.getI(), 0x100) << "I should be equal to 0x100";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getI(), 0x110) << "I should be equal to 0x110 (I + V[2])";
 }
 
 /**
  * @brief Test the FX29 opcode (LD F, Vx - Set I = location of sprite for digit Vx).
  *
- * This test verifies that executing the FX29 opcode sets I to the location of the sprite for the
- * digit in Vx.
+ * This test verifies that executing the FX29 opcode sets I to the location of the sprite for
+ * the digit in Vx.
  */
 TEST_F(Chip8CPUTest, opcode_FX29_test)
 {
@@ -459,12 +659,23 @@ TEST_F(Chip8CPUTest, opcode_FX29_test)
  * @brief Test the FX33 opcode (LD B, Vx - Store BCD representation of Vx in memory locations I,
  * I+1, and I+2).
  *
- * This test verifies that executing the FX33 opcode stores the binary-coded decimal representation
- * of Vx in memory.
+ * This test verifies that executing the FX33 opcode stores the binary-coded decimal
+ * representation of Vx in memory.
  */
 TEST_F(Chip8CPUTest, opcode_FX33_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xF2);
+    memory.write(0x201, 0x33);
+
+    cpu.setV(2, 0xAB);
+    cpu.setI(0x100);
+    EXPECT_EQ(cpu.getV(2), 0xAB) << "V[2] should be equal to 0xAB";
+
+    cpu.cycle();
+
+    EXPECT_EQ(memory.read(0x100), 0x01) << "Memory at 0x100 should be equal to 0x01";
+    EXPECT_EQ(memory.read(0x101), 0x07) << "Memory at 0x101 should be equal to 0x07";
+    EXPECT_EQ(memory.read(0x102), 0x01) << "Memory at 0x102 should be equal to 0x01";
 }
 
 /**
@@ -476,17 +687,127 @@ TEST_F(Chip8CPUTest, opcode_FX33_test)
  */
 TEST_F(Chip8CPUTest, opcode_FX55_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xFF);
+    memory.write(0x201, 0x55);
+
+    cpu.setV(0x0, 0x12);
+    cpu.setV(0x1, 0x34);
+    cpu.setV(0x2, 0x56);
+    cpu.setV(0x3, 0x78);
+    cpu.setV(0x4, 0x9A);
+    cpu.setV(0x5, 0xBC);
+    cpu.setV(0x6, 0xDE);
+    cpu.setV(0x7, 0xF0);
+    cpu.setV(0x8, 0x11);
+    cpu.setV(0x9, 0x22);
+    cpu.setV(0xA, 0x33);
+    cpu.setV(0xB, 0x44);
+    cpu.setV(0xC, 0x55);
+    cpu.setV(0xD, 0x66);
+    cpu.setV(0xE, 0x77);
+    cpu.setV(0xF, 0x88);
+    cpu.setI(0x100);
+    EXPECT_EQ(cpu.getV(0), 0x12) << "V[0] should be equal to 0x12";
+    EXPECT_EQ(cpu.getV(1), 0x34) << "V[1] should be equal to 0x34";
+    EXPECT_EQ(cpu.getV(2), 0x56) << "V[2] should be equal to 0x56";
+    EXPECT_EQ(cpu.getV(3), 0x78) << "V[3] should be equal to 0x78";
+    EXPECT_EQ(cpu.getV(4), 0x9A) << "V[4] should be equal to 0x9A";
+    EXPECT_EQ(cpu.getV(5), 0xBC) << "V[5] should be equal to 0xBC";
+    EXPECT_EQ(cpu.getV(6), 0xDE) << "V[6] should be equal to 0xDE";
+    EXPECT_EQ(cpu.getV(7), 0xF0) << "V[7] should be equal to 0xF0";
+    EXPECT_EQ(cpu.getV(8), 0x11) << "V[8] should be equal to 0x11";
+    EXPECT_EQ(cpu.getV(9), 0x22) << "V[9] should be equal to 0x22";
+    EXPECT_EQ(cpu.getV(10), 0x33) << "V[10] should be equal to 0x33";
+    EXPECT_EQ(cpu.getV(11), 0x44) << "V[11] should be equal to 0x44";
+    EXPECT_EQ(cpu.getV(12), 0x55) << "V[12] should be equal to 0x55";
+    EXPECT_EQ(cpu.getV(13), 0x66) << "V[13] should be equal to 0x66";
+    EXPECT_EQ(cpu.getV(14), 0x77) << "V[14] should be equal to 0x77";
+    EXPECT_EQ(cpu.getV(15), 0x88) << "V[15] should be equal to 0x88";
+    EXPECT_EQ(cpu.getI(), 0x100) << "I should be equal to 0x100";
+
+    cpu.cycle();
+
+    EXPECT_EQ(memory.read(0x100), 0x12) << "Memory at 0x100 should be equal to 0x12";
+    EXPECT_EQ(memory.read(0x101), 0x34) << "Memory at 0x101 should be equal to 0x34";
+    EXPECT_EQ(memory.read(0x102), 0x56) << "Memory at 0x102 should be equal to 0x56";
+    EXPECT_EQ(memory.read(0x103), 0x78) << "Memory at 0x103 should be equal to 0x78";
+    EXPECT_EQ(memory.read(0x104), 0x9A) << "Memory at 0x104 should be equal to 0x9A";
+    EXPECT_EQ(memory.read(0x105), 0xBC) << "Memory at 0x105 should be equal to 0xBC";
+    EXPECT_EQ(memory.read(0x106), 0xDE) << "Memory at 0x106 should be equal to 0xDE";
+    EXPECT_EQ(memory.read(0x107), 0xF0) << "Memory at 0x107 should be equal to 0xF0";
+    EXPECT_EQ(memory.read(0x108), 0x11) << "Memory at 0x108 should be equal to 0x11";
+    EXPECT_EQ(memory.read(0x109), 0x22) << "Memory at 0x109 should be equal to 0x22";
+    EXPECT_EQ(memory.read(0x10A), 0x33) << "Memory at 0x10A should be equal to 0x33";
+    EXPECT_EQ(memory.read(0x10B), 0x44) << "Memory at 0x10B should be equal to 0x44";
+    EXPECT_EQ(memory.read(0x10C), 0x55) << "Memory at 0x10C should be equal to 0x55";
+    EXPECT_EQ(memory.read(0x10D), 0x66) << "Memory at 0x10D should be equal to 0x66";
+    EXPECT_EQ(memory.read(0x10E), 0x77) << "Memory at 0x10E should be equal to 0x77";
+    EXPECT_EQ(memory.read(0x10F), 0x88) << "Memory at 0x10F should be equal to 0x88";
 }
 
 /**
- * @brief Test the FX65 opcode (LD Vx, [I] - Read registers V0 through Vx from memory starting at
- * location I).
+ * @brief Test the FX65 opcode (LD Vx, [I] - Read registers V0 through Vx from memory starting
+ * at location I).
  *
  * This test verifies that executing the FX65 opcode reads registers V0 through Vx from memory
  * starting at address I.
  */
 TEST_F(Chip8CPUTest, opcode_FX65_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xFF);
+    memory.write(0x201, 0x65);
+
+    cpu.setI(0x100);
+    memory.write(0x100, 0x12);
+    memory.write(0x101, 0x34);
+    memory.write(0x102, 0x56);
+    memory.write(0x103, 0x78);
+    memory.write(0x104, 0x9A);
+    memory.write(0x105, 0xBC);
+    memory.write(0x106, 0xDE);
+    memory.write(0x107, 0xF0);
+    memory.write(0x108, 0x11);
+    memory.write(0x109, 0x22);
+    memory.write(0x10A, 0x33);
+    memory.write(0x10B, 0x44);
+    memory.write(0x10C, 0x55);
+    memory.write(0x10D, 0x66);
+    memory.write(0x10E, 0x77);
+    memory.write(0x10F, 0x88);
+    EXPECT_EQ(cpu.getI(), 0x100) << "I should be equal to 0x100";
+    EXPECT_EQ(memory.read(0x100), 0x12) << "Memory at 0x100 should be equal to 0x12";
+    EXPECT_EQ(memory.read(0x101), 0x34) << "Memory at 0x101 should be equal to 0x34";
+    EXPECT_EQ(memory.read(0x102), 0x56) << "Memory at 0x102 should be equal to 0x56";
+    EXPECT_EQ(memory.read(0x103), 0x78) << "Memory at 0x103 should be equal to 0x78";
+    EXPECT_EQ(memory.read(0x104), 0x9A) << "Memory at 0x104 should be equal to 0x9A";
+    EXPECT_EQ(memory.read(0x105), 0xBC) << "Memory at 0x105 should be equal to 0xBC";
+    EXPECT_EQ(memory.read(0x106), 0xDE) << "Memory at 0x106 should be equal to 0xDE";
+    EXPECT_EQ(memory.read(0x107), 0xF0) << "Memory at 0x107 should be equal to 0xF0";
+    EXPECT_EQ(memory.read(0x108), 0x11) << "Memory at 0x108 should be equal to 0x11";
+    EXPECT_EQ(memory.read(0x109), 0x22) << "Memory at 0x109 should be equal to 0x22";
+    EXPECT_EQ(memory.read(0x10A), 0x33) << "Memory at 0x10A should be equal to 0x33";
+    EXPECT_EQ(memory.read(0x10B), 0x44) << "Memory at 0x10B should be equal to 0x44";
+    EXPECT_EQ(memory.read(0x10C), 0x55) << "Memory at 0x10C should be equal to 0x55";
+    EXPECT_EQ(memory.read(0x10D), 0x66) << "Memory at 0x10D should be equal to 0x66";
+    EXPECT_EQ(memory.read(0x10E), 0x77) << "Memory at 0x10E should be equal to 0x77";
+    EXPECT_EQ(memory.read(0x10F), 0x88) << "Memory at 0x10F should be equal to 0x88";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(0), 0x12) << "V[0] should be equal to 0x12";
+    EXPECT_EQ(cpu.getV(1), 0x34) << "V[1] should be equal to 0x34";
+    EXPECT_EQ(cpu.getV(2), 0x56) << "V[2] should be equal to 0x56";
+    EXPECT_EQ(cpu.getV(3), 0x78) << "V[3] should be equal to 0x78";
+    EXPECT_EQ(cpu.getV(4), 0x9A) << "V[4] should be equal to 0x9A";
+    EXPECT_EQ(cpu.getV(5), 0xBC) << "V[5] should be equal to 0xBC";
+    EXPECT_EQ(cpu.getV(6), 0xDE) << "V[6] should be equal to 0xDE";
+    EXPECT_EQ(cpu.getV(7), 0xF0) << "V[7] should be equal to 0xF0";
+    EXPECT_EQ(cpu.getV(8), 0x11) << "V[8] should be equal to 0x11";
+    EXPECT_EQ(cpu.getV(9), 0x22) << "V[9] should be equal to 0x22";
+    EXPECT_EQ(cpu.getV(10), 0x33) << "V[10] should be equal to 0x33";
+    EXPECT_EQ(cpu.getV(11), 0x44) << "V[11] should be equal to 0x44";
+    EXPECT_EQ(cpu.getV(12), 0x55) << "V[12] should be equal to 0x55";
+    EXPECT_EQ(cpu.getV(13), 0x66) << "V[13] should be equal to 0x66";
+    EXPECT_EQ(cpu.getV(14), 0x77) << "V[14] should be equal to 0x77";
+    EXPECT_EQ(cpu.getV(15), 0x88) << "V[15] should be equal to 0x88";
 }

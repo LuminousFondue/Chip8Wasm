@@ -44,6 +44,8 @@ class Chip8CPU
      */
     uint16_t getI() const { return I_; }
 
+    void setI(uint16_t value) { I_ = value; }
+
     /**
      * @brief Gets the value of a specific register.
      * @param index The index of the register (0-15).
