@@ -354,14 +354,14 @@ void Chip8CPU::opcode_8XY1(uint16_t opcode)
  * 8XY2: AND Vx, Vy - Set Vx = Vx AND Vy
  *
  * Performs a bitwise AND on the values of Vx and Vy,
- * then stores the result in Vx. A bitwise AND compares the
- * corresponding bits from two values, and if both bits are 1,
- * then the same bit in the result is also 1. Otherwise, it is 0.
+ * then stores the result in Vx.
  */
 void Chip8CPU::opcode_8XY2(uint16_t opcode)
 {
-    /* TODO: implement 8XY2 (AND Vx, Vy) */
-    spdlog::debug("Opcode: 8XY2");
+    spdlog::debug("Running Opcode: 8XY2");
+    uint8_t x = this->getNibble(opcode, 2);
+    uint8_t y = this->getNibble(opcode, 1);
+    this->setV(x, this->getV(x) & this->getV(y));
 }
 
 /**
