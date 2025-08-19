@@ -32,6 +32,7 @@ void Chip8CPU::reset()
     I_  = 0;                                    // Reset index register
     std::fill(std::begin(V_), std::end(V_), 0); // Clear registers
     std::fill(std::begin(stack_), std::end(stack_), 0); // Clear stack
+    srand(time(nullptr));                               // Seed random number generator
     spdlog::debug("Chip8 CPU reset to initial state");
 }
 
@@ -482,8 +483,10 @@ void Chip8CPU::opcode_BNNN(uint16_t opcode)
  */
 void Chip8CPU::opcode_CXKK(uint16_t opcode)
 {
-    /* TODO: implement CXKK (RND Vx, byte) */
-    spdlog::debug("Opcode: CXKK");
+    spdlog::debug("Running Opcode: CXKK");
+    uint8_t x  = this->getNibble(opcode, 2);
+    uint8_t kk = opcode & 0x00FF;
+    this->setV(x, (rand() % 256) & kk);
 }
 
 /**
