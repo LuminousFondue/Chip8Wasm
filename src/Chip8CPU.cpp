@@ -617,8 +617,12 @@ void Chip8CPU::opcode_FX33(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX55(uint16_t opcode)
 {
-    /* TODO: implement FX55 (LD [I], Vx) */
-    spdlog::debug("Opcode: FX55");
+    spdlog::debug("Running Opcode: FX55");
+    uint8_t x = this->getNibble(opcode, 2);
+    for (uint8_t i = 0; i <= x; ++i)
+    {
+        memory_.write(this->getI() + i, this->getV(i));
+    }
 }
 
 /**
