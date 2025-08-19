@@ -470,8 +470,9 @@ void Chip8CPU::opcode_ANNN(uint16_t opcode)
  */
 void Chip8CPU::opcode_BNNN(uint16_t opcode)
 {
-    /* TODO: implement BNNN (JP V0, addr) */
-    spdlog::debug("Opcode: BNNN");
+    spdlog::debug("Running Opcode: BNNN");
+    uint16_t address = opcode & 0x0FFF;
+    this->PC_        = address + this->getV(0);
 }
 
 /**
