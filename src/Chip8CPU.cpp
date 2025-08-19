@@ -448,8 +448,13 @@ void Chip8CPU::opcode_8XYE(uint16_t opcode)
  */
 void Chip8CPU::opcode_9XY0(uint16_t opcode)
 {
-    /* TODO: implement 9XY0 (SNE Vx, Vy) */
-    spdlog::debug("Opcode: 9XY0");
+    spdlog::debug("Running Opcode: 9XY0");
+    uint8_t x = this->getNibble(opcode, 2);
+    uint8_t y = this->getNibble(opcode, 1);
+    if (this->getV(x) != this->getV(y))
+    {
+        this->PC_ += 2;
+    }
 }
 
 /**
