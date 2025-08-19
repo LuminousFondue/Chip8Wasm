@@ -400,8 +400,18 @@ void Chip8CPU::opcode_8XY4(uint16_t opcode)
  */
 void Chip8CPU::opcode_8XY5(uint16_t opcode)
 {
-    /* TODO: implement 8XY5 (SUB Vx, Vy) */
-    spdlog::debug("Opcode: 8XY5");
+    spdlog::debug("Running Opcode: 8XY5");
+    uint8_t x = this->getNibble(opcode, 2);
+    uint8_t y = this->getNibble(opcode, 1);
+    if (this->getV(x) > this->getV(y))
+    {
+        this->setV(0xF, 1);
+    }
+    else
+    {
+        this->setV(0xF, 0);
+    }
+    this->setV(x, this->getV(x) - this->getV(y));
 }
 
 /**
