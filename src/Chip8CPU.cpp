@@ -298,8 +298,10 @@ void Chip8CPU::opcode_5XY0(uint16_t opcode)
  */
 void Chip8CPU::opcode_6XKK(uint16_t opcode)
 {
-    /* TODO: implement 6XKK (LD Vx, byte) */
-    spdlog::debug("Opcode: 6XKK");
+    spdlog::debug("Running Opcode: 6XKK");
+    uint8_t x  = (opcode >> 8) & 0xF;
+    uint8_t kk = opcode & 0xFF;
+    this->setV(x, kk);
 }
 
 /**

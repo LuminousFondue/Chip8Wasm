@@ -37,6 +37,7 @@ TEST_F(Chip8CPUTest, opcode_00E0_test)
     // Execute the cycle
     cpu.cycle();
     EXPECT_EQ(graphics.getPixel(0, 0), 0) << "Pixel should be off";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "PC should be incremented by 2";
 }
 
 TEST_F(Chip8CPUTest, opcode_00EE_test)
@@ -130,7 +131,15 @@ TEST_F(Chip8CPUTest, opcode_5XY0_test)
 
 TEST_F(Chip8CPUTest, opcode_6XNN_test)
 {
-    FAIL() << "Not yet implemented";
+    EXPECT_EQ(cpu.getV(2), 0) << "V[2] should be equal to 0";
+
+    memory.write(0x200, 0x62);
+    memory.write(0x201, 0xDE);
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(2), 0xDE) << "V[2] should be equal to 0xDE";
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
 }
 
 TEST_F(Chip8CPUTest, opcode_7XNN_test)
