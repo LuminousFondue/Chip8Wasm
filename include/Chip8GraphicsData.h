@@ -47,6 +47,11 @@ class Chip8GraphicsData
      */
     bool getPixel(int x, int y) const;
 
+    /**
+     * Prints the current state of the framebuffer to the console.
+     */
+    void printScreen() const;
+
     std::vector<uint32_t> dumpFrameBuffer() const;
 
   private:
