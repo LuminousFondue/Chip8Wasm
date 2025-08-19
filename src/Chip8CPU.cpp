@@ -436,8 +436,19 @@ void Chip8CPU::opcode_8XY7(uint16_t opcode)
  */
 void Chip8CPU::opcode_8XYE(uint16_t opcode)
 {
-    /* TODO: implement 8XYE (SHL Vx {, Vy}) */
-    spdlog::debug("Opcode: 8XYE");
+    spdlog::debug("Running Opcode: 8XYE");
+    uint8_t x = this->getNibble(opcode, 2);
+    // Check if the most significant bit is set
+    if (this->getV(x) & 0x80)
+    {
+        this->setV(0xF, 1);
+    }
+    else
+    {
+        this->setV(0xF, 0);
+    }
+    // Shift Vx left by 1
+    this->setV(x, this->getV(x) << 1);
 }
 
 /**
