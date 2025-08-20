@@ -34,12 +34,21 @@ void Chip8CPU::reset()
     std::fill(std::begin(V_), std::end(V_), 0); // Clear registers
     std::fill(std::begin(stack_), std::end(stack_), 0); // Clear stack
     srand(time(nullptr));                               // Seed random number generator
+    loadFont();
     spdlog::debug("Chip8 CPU reset to initial state");
 }
 
 uint8_t Chip8CPU::getNibble(uint16_t opcode, int nibbleIndex)
 {
     return (opcode >> (nibbleIndex * 4)) & 0xF;
+}
+
+void Chip8CPU::loadFont()
+{
+    for (int i = 0; i < FONT_BYTES; ++i)
+    {
+        memory_.write(i, chip8Font[i]);
+    }
 }
 
 void Chip8CPU::initializeOpcodeTables()
