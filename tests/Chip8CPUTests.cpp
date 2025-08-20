@@ -53,7 +53,20 @@ TEST_F(Chip8CPUTest, opcode_00E0_test)
  */
 TEST_F(Chip8CPUTest, opcode_00EE_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0x22);
+    memory.write(0x201, 0x56);
+    memory.write(0x256, 0x00);
+    memory.write(0x257, 0xEE);
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getPC(), 0x256) << "Program counter should jump to 0x256";
+    EXPECT_EQ(cpu.getSP(), 1) << "Stack pointer should be incremented to 1";
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should return to 0x202 after RET";
+    EXPECT_EQ(cpu.getSP(), 0) << "Stack pointer should be decremented to 0";
 }
 
 /**

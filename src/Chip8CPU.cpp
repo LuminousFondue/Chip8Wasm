@@ -223,8 +223,9 @@ void Chip8CPU::opcode_00E0(uint16_t opcode)
  */
 void Chip8CPU::opcode_00EE(uint16_t opcode)
 {
-    /* TODO: implement 00EE (RET) */
-    spdlog::debug("Opcode: 00EE");
+    spdlog::debug("Running Opcode: 00EE");
+    this->PC_ = this->stack_[this->SP_];
+    this->SP_--;
 }
 
 /**
