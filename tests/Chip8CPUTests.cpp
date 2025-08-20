@@ -9,9 +9,10 @@ class Chip8CPUTest : public ::testing::Test
   protected:
     Chip8Memory       memory;
     Chip8GraphicsData graphics;
+    Chip8InputData    input;
     Chip8CPU          cpu;
 
-    Chip8CPUTest() : cpu(memory, graphics) {}
+    Chip8CPUTest() : cpu(memory, graphics, input) {}
 };
 
 TEST_F(Chip8CPUTest, Initialization_Reset)

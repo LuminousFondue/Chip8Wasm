@@ -5,8 +5,8 @@
 #include <bitset>
 #include <cstdio>
 
-Chip8CPU::Chip8CPU(Chip8Memory& memory, Chip8GraphicsData& graphics)
-    : memory_(memory), graphics_(graphics)
+Chip8CPU::Chip8CPU(Chip8Memory& memory, Chip8GraphicsData& graphics, Chip8InputData& input)
+    : memory_(memory), graphics_(graphics), input_(input)
 {
     reset();
     initializeOpcodeTables();

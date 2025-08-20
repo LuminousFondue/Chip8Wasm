@@ -2,6 +2,7 @@
 #include <array>
 
 #include "Chip8GraphicsData.h"
+#include "Chip8InputData.h"
 #include "Chip8Memory.h"
 
 class Chip8CPU
@@ -13,8 +14,9 @@ class Chip8CPU
      * @brief Constructs a Chip8CPU instance.
      * @param memory Reference to the Chip8Memory instance.
      * @param graphics Reference to the Chip8GraphicsData instance.
+     * @param input Reference to the Chip8InputData instance.
      */
-    explicit Chip8CPU(Chip8Memory& memory, Chip8GraphicsData& graphics);
+    explicit Chip8CPU(Chip8Memory& memory, Chip8GraphicsData& graphics, Chip8InputData& input);
 
     /**
      * @brief Destroys the Chip8CPU instance.
@@ -105,6 +107,7 @@ class Chip8CPU
 
     Chip8Memory&       memory_;
     Chip8GraphicsData& graphics_;
+    Chip8InputData&    input_;
 
     using OpcodeHandler = void (Chip8CPU::*)(uint16_t);
 
