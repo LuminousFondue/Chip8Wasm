@@ -2,6 +2,7 @@
 
 #include <spdlog/spdlog.h>
 
+#include <bitset>
 #include <cstdio>
 
 Chip8CPU::Chip8CPU(Chip8Memory& memory, Chip8GraphicsData& graphics)
@@ -554,8 +555,38 @@ void Chip8CPU::opcode_CXKK(uint16_t opcode)
  */
 void Chip8CPU::opcode_DXYN(uint16_t opcode)
 {
-    /* TODO: implement DXYN (DRW Vx, Vy, nibble) */
-    spdlog::debug("Opcode: DXYN");
+    spdlog::debug("Running Opcode: DXYN");
+    uint8_t x = this->getNibble(opcode, 2);
+    uint8_t y = this->getNibble(opcode, 1);
+    uint8_t n = this->getNibble(opcode, 0);
+    setV(0xF, 0); // Clear VF before drawing
+
+    for (int i = 0; i < n; ++i)
+    {
+        uint8_t     sprite      = memory_.read(I_ + i);
+        std::string sprite_bits = std::bitset<8>(sprite).to_string();
+        spdlog::trace("Drawing sprite data: {} at ({}, {})", sprite_bits, getV(x), getV(y));
+        for (int j = 0; j < 8; ++j)
+        {
+            // Calculate pixel position
+            int pixel_x = (getV(x) + j) % graphics_.FRAMEBUFFER_WIDTH;
+            int pixel_y = (getV(y) + i) % graphics_.FRAMEBUFFER_HEIGHT;
+
+            // Check if the pixel is set
+            if ((sprite & (0x80 >> j)) != 0)
+            {
+                // If the pixel is already set, set VF to 1
+                if (graphics_.getPixel(pixel_x, pixel_y))
+                {
+                    graphics_.setPixel(pixel_x, pixel_y, false); // Erase the pixel
+                    setV(0xF, 1);
+                    continue;
+                }
+                // Draw the pixel
+                graphics_.setPixel(pixel_x, pixel_y, true);
+            }
+        }
+    }
 }
 
 /**

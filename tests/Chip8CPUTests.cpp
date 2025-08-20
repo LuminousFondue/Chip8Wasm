@@ -561,9 +561,118 @@ TEST_F(Chip8CPUTest, opcode_CXKK_test)
  * This test verifies that executing the DXYN opcode draws a sprite at coordinate (Vx, Vy) with
  * N bytes of sprite data.
  */
-TEST_F(Chip8CPUTest, opcode_DXYN_test)
+TEST_F(Chip8CPUTest, opcode_DXYN_NoCollisionNoWrap)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xD1);
+    memory.write(0x201, 0xA4);
+
+    memory.write(0x300, 0b11111111);
+    memory.write(0x301, 0b10000001);
+    memory.write(0x302, 0b10000001);
+    memory.write(0x303, 0b11111111);
+
+    cpu.setI(0x300);
+    cpu.setV(1, 5);
+    cpu.setV(0xA, 1);
+
+    cpu.cycle();
+
+    EXPECT_EQ(graphics.getPixel(5, 1), 1) << "Pixel at (5, 1) should be set";
+    EXPECT_EQ(graphics.getPixel(6, 1), 1) << "Pixel at (6, 1) should be set";
+    EXPECT_EQ(graphics.getPixel(7, 1), 1) << "Pixel at (7, 1) should be set";
+    EXPECT_EQ(graphics.getPixel(8, 1), 1) << "Pixel at (8, 1) should be set";
+    EXPECT_EQ(graphics.getPixel(9, 1), 1) << "Pixel at (9, 1) should be set";
+    EXPECT_EQ(graphics.getPixel(10, 1), 1) << "Pixel at (10, 1) should be set";
+    EXPECT_EQ(graphics.getPixel(11, 1), 1) << "Pixel at (11, 1) should be set";
+    EXPECT_EQ(graphics.getPixel(12, 1), 1) << "Pixel at (12, 1) should be set";
+
+    EXPECT_EQ(graphics.getPixel(5, 2), 1) << "Pixel at (5, 2) should be set";
+    EXPECT_EQ(graphics.getPixel(6, 2), 0) << "Pixel at (6, 2) should not be set";
+    EXPECT_EQ(graphics.getPixel(7, 2), 0) << "Pixel at (7, 2) should not be set";
+    EXPECT_EQ(graphics.getPixel(8, 2), 0) << "Pixel at (8, 2) should not be set";
+    EXPECT_EQ(graphics.getPixel(9, 2), 0) << "Pixel at (9, 2) should not be set";
+    EXPECT_EQ(graphics.getPixel(10, 2), 0) << "Pixel at (10, 2) should not be set";
+    EXPECT_EQ(graphics.getPixel(11, 2), 0) << "Pixel at (11, 2) should not be set";
+    EXPECT_EQ(graphics.getPixel(12, 2), 1) << "Pixel at (12, 2) should be set";
+
+    EXPECT_EQ(graphics.getPixel(5, 3), 1) << "Pixel at (5, 3) should be set";
+    EXPECT_EQ(graphics.getPixel(6, 3), 0) << "Pixel at (6, 3) should not be set";
+    EXPECT_EQ(graphics.getPixel(7, 3), 0) << "Pixel at (7, 3) should not be set";
+    EXPECT_EQ(graphics.getPixel(8, 3), 0) << "Pixel at (8, 3) should not be set";
+    EXPECT_EQ(graphics.getPixel(9, 3), 0) << "Pixel at (9, 3) should not be set";
+    EXPECT_EQ(graphics.getPixel(10, 3), 0) << "Pixel at (10, 3) should not be set";
+    EXPECT_EQ(graphics.getPixel(11, 3), 0) << "Pixel at (11, 3) should not be set";
+    EXPECT_EQ(graphics.getPixel(12, 3), 1) << "Pixel at (12, 3) should be set";
+
+    EXPECT_EQ(graphics.getPixel(5, 4), 1) << "Pixel at (5, 4) should be set";
+    EXPECT_EQ(graphics.getPixel(6, 4), 1) << "Pixel at (6, 4) should be set";
+    EXPECT_EQ(graphics.getPixel(7, 4), 1) << "Pixel at (7, 4) should be set";
+    EXPECT_EQ(graphics.getPixel(8, 4), 1) << "Pixel at (8, 4) should be set";
+    EXPECT_EQ(graphics.getPixel(9, 4), 1) << "Pixel at (9, 4) should be set";
+    EXPECT_EQ(graphics.getPixel(10, 4), 1) << "Pixel at (10, 4) should be set";
+    EXPECT_EQ(graphics.getPixel(11, 4), 1) << "Pixel at (11, 4) should be set";
+    EXPECT_EQ(graphics.getPixel(12, 4), 1) << "Pixel at (12, 4) should be set";
+
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
+}
+
+TEST_F(Chip8CPUTest, opcode_DXYN_Collision)
+{
+    memory.write(0x200, 0xD1);
+    memory.write(0x201, 0xA4);
+    memory.write(0x202, 0xD2);
+    memory.write(0x203, 0x34);
+
+    memory.write(0x300, 0b11111111);
+    memory.write(0x301, 0b10000001);
+    memory.write(0x302, 0b10000001);
+    memory.write(0x303, 0b11111111);
+
+    cpu.setI(0x300);
+    cpu.setV(1, 5);
+    cpu.setV(0xA, 1);
+    cpu.setV(2, 12);
+    cpu.setV(3, 4);
+
+    cpu.cycle();
+    cpu.cycle();
+
+    EXPECT_EQ(graphics.getPixel(11, 4), 1) << "Pixel at (11, 4) should be set";
+    EXPECT_EQ(graphics.getPixel(12, 4), 0) << "Pixel at (12, 4) should not be set";
+    EXPECT_EQ(graphics.getPixel(13, 4), 1) << "Pixel at (13, 4) should be set";
+
+    EXPECT_EQ(cpu.getPC(), 0x204) << "Program counter should be incremented by 2";
+}
+
+TEST_F(Chip8CPUTest, opcode_DXYN_Wrap)
+{
+    memory.write(0x200, 0xD1);
+    memory.write(0x201, 0xA4);
+    memory.write(0x202, 0xD2);
+    memory.write(0x203, 0x34);
+
+    memory.write(0x300, 0b11111111);
+    memory.write(0x301, 0b10000001);
+    memory.write(0x302, 0b10000001);
+    memory.write(0x303, 0b11111111);
+
+    cpu.setI(0x300);
+    cpu.setV(1, 60);
+    cpu.setV(0xA, 1);
+    cpu.setV(2, 10);
+    cpu.setV(3, 30);
+    ;
+
+    cpu.cycle();
+    cpu.cycle();
+
+    EXPECT_EQ(graphics.getPixel(1, 1), 1) << "Pixel at (1, 1) should be set";
+    EXPECT_EQ(graphics.getPixel(63, 1), 1) << "Pixel at (63, 1) should be set";
+
+    EXPECT_EQ(graphics.getPixel(10, 0), 1) << "Pixel at (10, 0) should be set";
+    EXPECT_EQ(graphics.getPixel(10, 31), 1) << "Pixel at (10, 31) should be set";
+
+    EXPECT_EQ(cpu.getPC(), 0x204) << "Program counter should be incremented by 2";
 }
 
 /**
