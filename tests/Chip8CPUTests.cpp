@@ -696,9 +696,30 @@ TEST_F(Chip8CPUTest, opcode_DXYN_Wrap)
  * This test verifies that executing the EX9E opcode skips the next instruction if the key
  * corresponding to Vx is pressed.
  */
-TEST_F(Chip8CPUTest, opcode_EX9E_test)
+TEST_F(Chip8CPUTest, opcode_EX9E_test_KeyPressed)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xE9);
+    memory.write(0x201, 0x9E);
+
+    input.setKeyState(0x01, true); // Simulate key 0x01 pressed
+    cpu.setV(0x9, 0x01);
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getPC(), 0x204) << "Program counter should be incremented by 2";
+}
+
+TEST_F(Chip8CPUTest, opcode_EX9E_test_KeyNotPressed)
+{
+    memory.write(0x200, 0xE9);
+    memory.write(0x201, 0x9E);
+
+    input.setKeyState(0x01, false); // Simulate key 0x01 not pressed
+    cpu.setV(0x9, 0x01);
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should not be incremented";
 }
 
 /**

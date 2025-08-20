@@ -607,8 +607,12 @@ void Chip8CPU::opcode_DXYN(uint16_t opcode)
  */
 void Chip8CPU::opcode_EX9E(uint16_t opcode)
 {
-    /* TODO: implement EX9E (SKP Vx) */
-    spdlog::debug("Opcode: EX9E");
+    spdlog::debug("Running Opcode: EX9E");
+    uint8_t x = this->getNibble(opcode, 2);
+    if (input_.isKeyPressed(this->getV(x)))
+    {
+        this->PC_ += 2;
+    }
 }
 
 /**
