@@ -37,8 +37,6 @@ void Chip8CPU::reset()
     std::fill(std::begin(stack_), std::end(stack_), 0); // Clear stack
     srand(time(nullptr));                               // Seed random number generator
     loadFont();
-    delayTimer_.reset();
-    soundTimer_.reset();
     spdlog::debug("Chip8 CPU reset to initial state");
 }
 

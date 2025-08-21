@@ -12,6 +12,10 @@ class Chip8
     Chip8();
     ~Chip8();
     void reset();
+    void loadROM(const uint8_t* romData, size_t romSize);
+    void run();
+    void pause();
+    void stop();
 
   private:
     Chip8Memory       memory_;
