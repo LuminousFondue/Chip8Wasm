@@ -51,7 +51,7 @@ void Chip8CPU::loadFont()
 {
     for (int i = 0; i < FONT_BYTES; ++i)
     {
-        memory_.write(0x50 + i, chip8Font[i * 5]);
+        memory_.write(0x50 + i, chip8Font[i]);
     }
 }
 

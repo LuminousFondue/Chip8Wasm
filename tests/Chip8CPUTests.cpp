@@ -867,11 +867,11 @@ TEST_F(Chip8CPUTest, opcode_FX29_test)
 
     for (int i = 0; i < 16; ++i)
     {
+        cpu.reset();
         cpu.setV(2, i);
         cpu.cycle();
         EXPECT_EQ(cpu.getI(), 0x50 + (i * 5)) << "I should be equal to " << (0x50 + (i * 5))
                                               << " (location of sprite for digit " << i << ")";
-        cpu.reset();
     }
 }
 
