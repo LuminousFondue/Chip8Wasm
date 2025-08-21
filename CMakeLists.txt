@@ -53,13 +53,16 @@ target_include_directories(Chip8Wasm PRIVATE include)
 # -----------------------------------------------------------------------------
 # Tests
 # -----------------------------------------------------------------------------
+include(CTest)
 enable_testing()
 
 add_executable(
     Chip8Tests
     tests/Chip8MemoryTests.cpp
     tests/Chip8GraphicsDataTests.cpp
+    tests/Chip8CPUTests.cpp
 )
+target_compile_definitions(Chip8Tests PRIVATE UNIT_TEST)
 
 target_include_directories(Chip8Tests PRIVATE include)
 target_link_libraries(Chip8Tests PRIVATE GTest::gtest_main Chip8Core)
