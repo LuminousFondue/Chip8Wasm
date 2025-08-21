@@ -15,7 +15,4 @@ class Chip8InputData
     bool previousKeyStates[16];
 
     void storeKeyStates();
-
-  private:
-    bool keyStates[16];
 };
