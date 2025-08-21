@@ -63,6 +63,7 @@ add_executable(
     tests/Chip8CPUTests.cpp
 )
 target_compile_definitions(Chip8Tests PRIVATE UNIT_TEST)
+
 target_include_directories(Chip8Tests PRIVATE include)
 target_link_libraries(Chip8Tests PRIVATE GTest::gtest_main Chip8Core)
 
