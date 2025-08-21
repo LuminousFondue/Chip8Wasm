@@ -4,6 +4,7 @@
 #include "Chip8GraphicsData.h"
 #include "Chip8InputData.h"
 #include "Chip8Memory.h"
+#include "Chip8Timer.h"
 
 class Chip8CPU
 {
@@ -16,7 +17,8 @@ class Chip8CPU
      * @param graphics Reference to the Chip8GraphicsData instance.
      * @param input Reference to the Chip8InputData instance.
      */
-    explicit Chip8CPU(Chip8Memory& memory, Chip8GraphicsData& graphics, Chip8InputData& input);
+    explicit Chip8CPU(Chip8Memory& memory, Chip8GraphicsData& graphics, Chip8InputData& input,
+                      Chip8Timer& delayTimer, Chip8Timer& soundTimer);
 
     /**
      * @brief Destroys the Chip8CPU instance.
@@ -117,6 +119,8 @@ class Chip8CPU
     Chip8Memory&       memory_;
     Chip8GraphicsData& graphics_;
     Chip8InputData&    input_;
+    Chip8Timer&        delayTimer_;
+    Chip8Timer&        soundTimer_;
 
     using OpcodeHandler = void (Chip8CPU::*)(uint16_t);
 

@@ -10,9 +10,11 @@ class Chip8CPUTest : public ::testing::Test
     Chip8Memory       memory;
     Chip8GraphicsData graphics;
     Chip8InputData    input;
+    Chip8Timer        delayTimer;
+    Chip8Timer        soundTimer;
     Chip8CPU          cpu;
 
-    Chip8CPUTest() : cpu(memory, graphics, input) {}
+    Chip8CPUTest() : cpu(memory, graphics, input, delayTimer, soundTimer) {}
 };
 
 TEST_F(Chip8CPUTest, Initialization_Reset)
@@ -776,7 +778,14 @@ TEST_F(Chip8CPUTest, opcode_EXA1_test_KeyPressed)
  */
 TEST_F(Chip8CPUTest, opcode_FX07_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xF0);
+    memory.write(0x201, 0x07);
+
+    cpu.setV(0x00, 0x22);
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getV(0x00), 0x00) << "V[0] should be equal to 0x00";
 }
 
 /**
@@ -798,7 +807,14 @@ TEST_F(Chip8CPUTest, opcode_FX0A_test)
  */
 TEST_F(Chip8CPUTest, opcode_FX15_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xF1);
+    memory.write(0x201, 0x15);
+
+    cpu.setV(0x01, 0x22);
+
+    cpu.cycle();
+
+    EXPECT_EQ(delayTimer.getValue(), 0x22) << "Delay timer should be equal to 0x22";
 }
 
 /**
@@ -808,7 +824,14 @@ TEST_F(Chip8CPUTest, opcode_FX15_test)
  */
 TEST_F(Chip8CPUTest, opcode_FX18_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xF1);
+    memory.write(0x201, 0x18);
+
+    cpu.setV(0x01, 0x22);
+
+    cpu.cycle();
+
+    EXPECT_EQ(soundTimer.getValue(), 0x22) << "Sound timer should be equal to 0x22";
 }
 
 /**

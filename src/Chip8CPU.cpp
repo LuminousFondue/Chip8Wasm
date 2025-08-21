@@ -5,8 +5,10 @@
 #include <bitset>
 #include <cstdio>
 
-Chip8CPU::Chip8CPU(Chip8Memory& memory, Chip8GraphicsData& graphics, Chip8InputData& input)
-    : memory_(memory), graphics_(graphics), input_(input)
+Chip8CPU::Chip8CPU(Chip8Memory& memory, Chip8GraphicsData& graphics, Chip8InputData& input,
+                   Chip8Timer& delayTimer, Chip8Timer& soundTimer)
+    : memory_(memory), graphics_(graphics), input_(input), delayTimer_(delayTimer),
+      soundTimer_(soundTimer)
 {
     reset();
     initializeOpcodeTables();
@@ -35,6 +37,8 @@ void Chip8CPU::reset()
     std::fill(std::begin(stack_), std::end(stack_), 0); // Clear stack
     srand(time(nullptr));                               // Seed random number generator
     loadFont();
+    delayTimer_.reset();
+    soundTimer_.reset();
     spdlog::debug("Chip8 CPU reset to initial state");
 }
 
@@ -638,8 +642,9 @@ void Chip8CPU::opcode_EXA1(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX07(uint16_t opcode)
 {
-    /* TODO: implement FX07 (LD Vx, DT) */
-    spdlog::debug("Opcode: FX07");
+    spdlog::debug("Running Opcode: FX07");
+    uint8_t x = this->getNibble(opcode, 2);
+    this->setV(x, delayTimer_.getValue());
 }
 
 /**
@@ -675,8 +680,9 @@ void Chip8CPU::opcode_FX0A(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX15(uint16_t opcode)
 {
-    /* TODO: implement FX15 (LD DT, Vx) */
-    spdlog::debug("Opcode: FX15");
+    spdlog::debug("Running Opcode: FX15");
+    uint8_t x = this->getNibble(opcode, 2);
+    delayTimer_.setValue(this->getV(x));
 }
 
 /**
@@ -686,8 +692,9 @@ void Chip8CPU::opcode_FX15(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX18(uint16_t opcode)
 {
-    /* TODO: implement FX18 (LD ST, Vx) */
-    spdlog::debug("Opcode: FX18");
+    spdlog::debug("Running Opcode: FX18");
+    uint8_t x = this->getNibble(opcode, 2);
+    soundTimer_.setValue(this->getV(x));
 }
 
 /**
