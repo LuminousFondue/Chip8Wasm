@@ -5,8 +5,10 @@
 #include <bitset>
 #include <cstdio>
 
-Chip8CPU::Chip8CPU(Chip8Memory& memory, Chip8GraphicsData& graphics, Chip8InputData& input)
-    : memory_(memory), graphics_(graphics), input_(input)
+Chip8CPU::Chip8CPU(Chip8Memory& memory, Chip8GraphicsData& graphics, Chip8InputData& input,
+                   Chip8Timer& delayTimer, Chip8Timer& soundTimer)
+    : memory_(memory), graphics_(graphics), input_(input), delayTimer_(delayTimer),
+      soundTimer_(soundTimer)
 {
     reset();
     initializeOpcodeTables();
@@ -35,6 +37,8 @@ void Chip8CPU::reset()
     std::fill(std::begin(stack_), std::end(stack_), 0); // Clear stack
     srand(time(nullptr));                               // Seed random number generator
     loadFont();
+    delayTimer_.reset();
+    soundTimer_.reset();
     spdlog::debug("Chip8 CPU reset to initial state");
 }
 
