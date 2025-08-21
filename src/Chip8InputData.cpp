@@ -26,3 +26,20 @@ bool Chip8InputData::isKeyPressed(int key) const
     }
     return false;
 }
+
+void Chip8InputData::storeKeyStates()
+{
+    for (int i = 0; i < 16; ++i)
+    {
+        previousKeyStates[i] = keyStates[i];
+    }
+}
+
+bool Chip8InputData::wasKeyReleased(int key) const
+{
+    if (key >= 0 && key < 16)
+    {
+        return previousKeyStates[key] && !keyStates[key];
+    }
+    return false;
+}

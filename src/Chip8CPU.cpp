@@ -650,8 +650,22 @@ void Chip8CPU::opcode_FX07(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX0A(uint16_t opcode)
 {
-    /* TODO: implement FX0A (LD Vx, K) */
-    spdlog::debug("Opcode: FX0A");
+    spdlog::debug("Running Opcode: FX0A");
+    uint8_t x          = this->getNibble(opcode, 2);
+    bool    keyPressed = false;
+    for (int i = 0; i < 16; ++i)
+    {
+        if (input_.wasKeyReleased(i))
+        {
+            this->setV(x, i);
+            keyPressed = true;
+            break;
+        }
+    }
+    if (!keyPressed)
+    {
+        this->PC_ -= 2;
+    }
 }
 
 /**
