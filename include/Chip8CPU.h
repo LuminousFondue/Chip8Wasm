@@ -50,6 +50,15 @@ class Chip8CPU
 
     void setI(uint16_t value) { I_ = value; }
 
+    uint8_t getFont(size_t index) const
+    {
+        if (index < FONT_BYTES)
+        {
+            return chip8Font[index];
+        }
+        throw std::out_of_range("Invalid font index");
+    }
+
     /**
      * @brief Gets the value of a specific register.
      * @param index The index of the register (0-15).

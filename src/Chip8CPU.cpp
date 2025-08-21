@@ -47,7 +47,7 @@ void Chip8CPU::loadFont()
 {
     for (int i = 0; i < FONT_BYTES; ++i)
     {
-        memory_.write(i, chip8Font[i]);
+        memory_.write(0x50 + i, chip8Font[i * 5]);
     }
 }
 
@@ -691,14 +691,14 @@ void Chip8CPU::opcode_FX1E(uint16_t opcode)
 /**
  * FX29: LD F, Vx - Load font sprite for digit Vx into I
  *
- * The value of register Vx is used as an index into the font sprite
- * data stored in memory. The address of the sprite is loaded into
- * register I.
+ * The value of I is set to the location for the hexadecimal sprite corresponding to the value of
+ * Vx.
  */
 void Chip8CPU::opcode_FX29(uint16_t opcode)
 {
-    /* TODO: implement FX29 (LD F, Vx) */
-    spdlog::debug("Opcode: FX29");
+    spdlog::debug("Running Opcode: FX29");
+    uint8_t x = this->getNibble(opcode, 2);
+    this->setI(0x50 + (this->getV(x) * 5));
 }
 
 /**

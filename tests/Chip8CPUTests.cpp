@@ -24,6 +24,20 @@ TEST_F(Chip8CPUTest, Initialization_Reset)
     {
         EXPECT_EQ(cpu.getV(i), 0);
     }
+    for (int y = 0; y < Chip8GraphicsData::FRAMEBUFFER_HEIGHT; ++y)
+    {
+        for (int x = 0; x < Chip8GraphicsData::FRAMEBUFFER_WIDTH; ++x)
+        {
+            EXPECT_EQ(graphics.getPixel(x, y), 0)
+                << "Pixel at (" << x << ", " << y << ") should be off";
+        }
+    }
+    // Check that font is loaded
+    for (int i = 0; i < 16; ++i)
+    {
+        EXPECT_EQ(memory.read(i + 0x50), cpu.getFont(i * 5))
+            << "Font data at index " << i << " should match";
+    }
 }
 
 /**
@@ -825,7 +839,17 @@ TEST_F(Chip8CPUTest, opcode_FX1E_test)
  */
 TEST_F(Chip8CPUTest, opcode_FX29_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xF2);
+    memory.write(0x201, 0x29);
+
+    for (int i = 0; i < 16; ++i)
+    {
+        cpu.setV(2, i);
+        cpu.cycle();
+        EXPECT_EQ(cpu.getI(), 0x50 + (i * 5)) << "I should be equal to " << (0x50 + (i * 5))
+                                              << " (location of sprite for digit " << i << ")";
+        cpu.reset();
+    }
 }
 
 /**
