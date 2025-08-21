@@ -824,7 +824,14 @@ TEST_F(Chip8CPUTest, opcode_FX15_test)
  */
 TEST_F(Chip8CPUTest, opcode_FX18_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xF1);
+    memory.write(0x201, 0x18);
+
+    cpu.setV(0x01, 0x22);
+
+    cpu.cycle();
+
+    EXPECT_EQ(soundTimer.getValue(), 0x22) << "Sound timer should be equal to 0x22";
 }
 
 /**

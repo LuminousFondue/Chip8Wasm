@@ -692,8 +692,9 @@ void Chip8CPU::opcode_FX15(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX18(uint16_t opcode)
 {
-    /* TODO: implement FX18 (LD ST, Vx) */
-    spdlog::debug("Opcode: FX18");
+    spdlog::debug("Running Opcode: FX18");
+    uint8_t x = this->getNibble(opcode, 2);
+    soundTimer_.setValue(this->getV(x));
 }
 
 /**
