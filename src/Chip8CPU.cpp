@@ -642,8 +642,9 @@ void Chip8CPU::opcode_EXA1(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX07(uint16_t opcode)
 {
-    /* TODO: implement FX07 (LD Vx, DT) */
-    spdlog::debug("Opcode: FX07");
+    spdlog::debug("Running Opcode: FX07");
+    uint8_t x = this->getNibble(opcode, 2);
+    this->setV(x, delayTimer_.getValue());
 }
 
 /**
