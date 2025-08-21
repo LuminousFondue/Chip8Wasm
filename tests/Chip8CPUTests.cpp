@@ -729,9 +729,30 @@ TEST_F(Chip8CPUTest, opcode_EX9E_test_KeyNotPressed)
  * This test verifies that executing the EXA1 opcode skips the next instruction if the key
  * corresponding to Vx is not pressed.
  */
-TEST_F(Chip8CPUTest, opcode_EXA1_test)
+TEST_F(Chip8CPUTest, opcode_EXA1_test_KeyNotPressed)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xE9);
+    memory.write(0x201, 0xA1);
+
+    input.setKeyState(0x01, false); // Simulate key 0x01 not pressed
+    cpu.setV(0x9, 0x01);
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getPC(), 0x204) << "Program counter should be incremented";
+}
+
+TEST_F(Chip8CPUTest, opcode_EXA1_test_KeyPressed)
+{
+    memory.write(0x200, 0xE9);
+    memory.write(0x201, 0xA1);
+
+    input.setKeyState(0x01, true); // Simulate key 0x01 pressed
+    cpu.setV(0x9, 0x01);
+
+    cpu.cycle();
+
+    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should not be incremented";
 }
 
 /**

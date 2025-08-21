@@ -623,8 +623,12 @@ void Chip8CPU::opcode_EX9E(uint16_t opcode)
  */
 void Chip8CPU::opcode_EXA1(uint16_t opcode)
 {
-    /* TODO: implement EXA1 (SKNP Vx) */
-    spdlog::debug("Opcode: EXA1");
+    spdlog::debug("Running Opcode: EXA1");
+    uint8_t x = this->getNibble(opcode, 2);
+    if (!input_.isKeyPressed(this->getV(x)))
+    {
+        this->PC_ += 2;
+    }
 }
 
 /**
