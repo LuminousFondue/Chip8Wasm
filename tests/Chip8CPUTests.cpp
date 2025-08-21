@@ -807,7 +807,14 @@ TEST_F(Chip8CPUTest, opcode_FX0A_test)
  */
 TEST_F(Chip8CPUTest, opcode_FX15_test)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xF1);
+    memory.write(0x201, 0x15);
+
+    cpu.setV(0x01, 0x22);
+
+    cpu.cycle();
+
+    EXPECT_EQ(delayTimer.getValue(), 0x22) << "Delay timer should be equal to 0x22";
 }
 
 /**

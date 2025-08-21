@@ -680,8 +680,9 @@ void Chip8CPU::opcode_FX0A(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX15(uint16_t opcode)
 {
-    /* TODO: implement FX15 (LD DT, Vx) */
-    spdlog::debug("Opcode: FX15");
+    spdlog::debug("Running Opcode: FX15");
+    uint8_t x = this->getNibble(opcode, 2);
+    delayTimer_.setValue(this->getV(x));
 }
 
 /**
