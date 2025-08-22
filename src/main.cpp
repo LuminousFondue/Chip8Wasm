@@ -28,8 +28,62 @@ std::vector<uint8_t> loadRom(const std::string& filename)
 
 void loadROM()
 {
-    std::vector<uint8_t> rom = loadRom("../../../roms/4-flags.ch8");
+    std::vector<uint8_t> rom = loadRom("../../../roms/7-beep.ch8");
     chip8.loadROM(rom.data(), rom.size());
+}
+
+#include <atomic>
+#include <chrono>
+#include <thread>
+
+std::atomic<bool> playToneFlag{false};
+
+void audioCallback(void* userdata, Uint8* stream, int len)
+{
+    static double phase      = 0.0;
+    double        freq       = 440.0; // A4 tone
+    int           sampleRate = 44100;
+    int16_t*      buffer     = reinterpret_cast<int16_t*>(stream);
+    int           samples    = len / 2;
+
+    if (playToneFlag)
+    {
+        for (int i = 0; i < samples; ++i)
+        {
+            buffer[i] = static_cast<int16_t>(std::sin(phase) * 3000);
+            phase += 2.0 * M_PI * freq / sampleRate;
+            if (phase > 2.0 * M_PI)
+                phase -= 2.0 * M_PI;
+        }
+    }
+    else
+    {
+        std::memset(stream, 0, len);
+    }
+}
+
+void initAudio()
+{
+    SDL_AudioSpec want{}, have{};
+    want.freq     = 44100;
+    want.format   = AUDIO_S16SYS;
+    want.channels = 1;
+    want.samples  = 512;
+    want.callback = audioCallback;
+
+    if (SDL_OpenAudio(&want, &have) < 0)
+    {
+        spdlog::error("Failed to open audio: {}", SDL_GetError());
+    }
+    else
+    {
+        SDL_PauseAudio(0);
+    }
+}
+
+void playTone(bool play)
+{
+    playToneFlag = play;
 }
 
 int main()
@@ -44,6 +98,8 @@ int main()
         spdlog::error("SDL could not initialize! SDL_Error: {}", SDL_GetError());
         return 1;
     }
+
+    initAudio();
 
     SDL_Window* window =
         SDL_CreateWindow("Chip8 Emulator", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -60,6 +116,17 @@ int main()
             if (e.type == SDL_QUIT)
                 quit = true;
         }
+
+        if (chip8.getSoundTimer().getValue() > 0)
+        {
+            spdlog::debug("Sound timer is active: {}", chip8.getSoundTimer().getValue());
+            playTone(true);
+        }
+        else
+        {
+            playTone(false);
+        }
+
         // Emulate one cycle of the Chip8 CPU
         chip8.cycle();
 
@@ -67,14 +134,11 @@ int main()
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Black background
         SDL_RenderClear(renderer);
 
-        // Example: draw pixels (replace with your Chip8 graphics buffer)
         for (int y = 0; y < CHIP8_HEIGHT; ++y)
         {
             for (int x = 0; x < CHIP8_WIDTH; ++x)
             {
-                // Replace with your actual pixel check:
-                if (chip8.getGraphics().getPixel(x,
-                                                 y)) // Implement getPixel() or access your buffer
+                if (chip8.getGraphics().getPixel(x, y))
                 {
                     SDL_Rect rect = {x * WINDOW_SCALE, y * WINDOW_SCALE, WINDOW_SCALE,
                                      WINDOW_SCALE};

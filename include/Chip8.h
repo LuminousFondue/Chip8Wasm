@@ -18,6 +18,7 @@ class Chip8
     void                     resume();
     void                     stop();
     const Chip8GraphicsData& getGraphics() const { return graphics_; }
+    const Chip8Timer&        getSoundTimer() const { return soundTimer_; }
 
   private:
     Chip8Memory       memory_;
