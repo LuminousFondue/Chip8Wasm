@@ -116,10 +116,11 @@ int main()
             if (e.type == SDL_QUIT)
                 quit = true;
         }
+        uint8_t soundTimerValue = chip8.getSoundTimer().getValue();
 
-        if (chip8.getSoundTimer().getValue() > 0)
+        if (soundTimerValue > 0)
         {
-            spdlog::debug("Sound timer is active: {}", chip8.getSoundTimer().getValue());
+            spdlog::debug("Sound timer is active: {}", soundTimerValue);
             playTone(true);
         }
         else
