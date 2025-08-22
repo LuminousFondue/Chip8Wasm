@@ -30,6 +30,9 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+# SDL 2
+find_package(SDL2 REQUIRED)
+
 # -----------------------------------------------------------------------------
 # Core Library
 # -----------------------------------------------------------------------------
@@ -47,9 +50,19 @@ target_link_libraries(Chip8Core PRIVATE spdlog::spdlog)
 # -----------------------------------------------------------------------------
 # Main Executable
 # -----------------------------------------------------------------------------
-add_executable(Chip8Wasm src/main.cpp)
-target_link_libraries(Chip8Wasm PRIVATE spdlog::spdlog Chip8Core)
+add_executable(
+    Chip8Wasm
+    src/main.cpp
+)
+
+target_link_libraries(
+    Chip8Wasm PRIVATE
+    spdlog::spdlog
+    Chip8Core
+    SDL2::SDL2
+)
 target_include_directories(Chip8Wasm PRIVATE include)
+
 
 # -----------------------------------------------------------------------------
 # Tests
