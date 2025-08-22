@@ -418,17 +418,11 @@ void Chip8CPU::opcode_8XY4(uint16_t opcode)
 void Chip8CPU::opcode_8XY5(uint16_t opcode)
 {
     spdlog::debug("Running Opcode: 8XY5");
-    uint8_t x = this->getNibble(opcode, 2);
-    uint8_t y = this->getNibble(opcode, 1);
-    if (this->getV(x) > this->getV(y))
-    {
-        this->setV(0xF, 1);
-    }
-    else
-    {
-        this->setV(0xF, 0);
-    }
-    this->setV(x, this->getV(x) - this->getV(y));
+    uint8_t  x          = this->getNibble(opcode, 2);
+    uint8_t  y          = this->getNibble(opcode, 1);
+    uint16_t difference = this->getV(x) - this->getV(y);
+    this->setV(x, difference & 0xFF);
+    this->setV(0xF, difference > 0xFF ? 0 : 1);
 }
 
 /**
@@ -440,8 +434,10 @@ void Chip8CPU::opcode_8XY5(uint16_t opcode)
 void Chip8CPU::opcode_8XY6(uint16_t opcode)
 {
     spdlog::debug("Running Opcode: 8XY6");
-    uint8_t x = this->getNibble(opcode, 2);
-    if (this->getV(x) & 0x01)
+    uint8_t x    = this->getNibble(opcode, 2);
+    uint8_t xVal = this->getV(x);
+    this->setV(x, this->getV(x) >> 1);
+    if (xVal & 0x01)
     {
         this->setV(0xF, 1);
     }
@@ -449,7 +445,6 @@ void Chip8CPU::opcode_8XY6(uint16_t opcode)
     {
         this->setV(0xF, 0);
     }
-    this->setV(x, this->getV(x) >> 1);
 }
 
 /**
@@ -461,17 +456,11 @@ void Chip8CPU::opcode_8XY6(uint16_t opcode)
 void Chip8CPU::opcode_8XY7(uint16_t opcode)
 {
     spdlog::debug("Running Opcode: 8XY7");
-    uint8_t x = this->getNibble(opcode, 2);
-    uint8_t y = this->getNibble(opcode, 1);
-    if (this->getV(y) > this->getV(x))
-    {
-        this->setV(0xF, 1);
-    }
-    else
-    {
-        this->setV(0xF, 0);
-    }
-    this->setV(x, this->getV(y) - this->getV(x));
+    uint8_t  x          = this->getNibble(opcode, 2);
+    uint8_t  y          = this->getNibble(opcode, 1);
+    uint16_t difference = this->getV(y) - this->getV(x);
+    this->setV(x, difference & 0xFF);
+    this->setV(0xF, difference > 0xFF ? 0 : 1);
 }
 
 /**
@@ -483,9 +472,12 @@ void Chip8CPU::opcode_8XY7(uint16_t opcode)
 void Chip8CPU::opcode_8XYE(uint16_t opcode)
 {
     spdlog::debug("Running Opcode: 8XYE");
-    uint8_t x = this->getNibble(opcode, 2);
+    uint8_t x    = this->getNibble(opcode, 2);
+    uint8_t xVal = this->getV(x);
+    // Shift Vx left by 1
+    this->setV(x, this->getV(x) << 1);
     // Check if the most significant bit is set
-    if (this->getV(x) & 0x80)
+    if (xVal & 0x80)
     {
         this->setV(0xF, 1);
     }
@@ -493,8 +485,6 @@ void Chip8CPU::opcode_8XYE(uint16_t opcode)
     {
         this->setV(0xF, 0);
     }
-    // Shift Vx left by 1
-    this->setV(x, this->getV(x) << 1);
 }
 
 /**

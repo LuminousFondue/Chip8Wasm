@@ -365,34 +365,32 @@ TEST_F(Chip8CPUTest, opcode_8XY4_test)
  * This test verifies that executing the 8XY5 opcode subtracts Vy from Vx and sets VF if there is no
  * borrow.
  */
-TEST_F(Chip8CPUTest, opcode_8XY5_test)
+TEST_F(Chip8CPUTest, opcode_8XY5_NoBorrow)
 {
     memory.write(0x200, 0x81);
     memory.write(0x201, 0x25);
 
-    cpu.setV(1, 0x20);
+    cpu.setV(1, 0x50);
     cpu.setV(2, 0x30);
-    EXPECT_EQ(cpu.getV(1), 0x20) << "V[1] should be equal to 0x20";
-    EXPECT_EQ(cpu.getV(2), 0x30) << "V[2] should be equal to 0x30";
 
     cpu.cycle();
 
-    EXPECT_EQ(cpu.getV(1), 0xF0) << "V[1] should be equal to V[1] - V[2]";
-    EXPECT_EQ(cpu.getV(0xF), 0) << "VF should be set to 0 (borrow)";
-    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
+    EXPECT_EQ(cpu.getV(1), 0x20) << "V[1] should be equal to V[1] - V[2]";
+    EXPECT_EQ(cpu.getV(0xF), 1) << "VF should be set to 1 (no borrow)";
+}
 
-    cpu.reset();
+TEST_F(Chip8CPUTest, opcode_8XY5_Borrow)
+{
+    memory.write(0x200, 0x81);
+    memory.write(0x201, 0x25);
 
     cpu.setV(1, 0x30);
-    cpu.setV(2, 0x20);
-    EXPECT_EQ(cpu.getV(1), 0x30) << "V[1] should be equal to 0x30";
-    EXPECT_EQ(cpu.getV(2), 0x20) << "V[2] should be equal to 0x20";
+    cpu.setV(2, 0x50);
 
     cpu.cycle();
 
-    EXPECT_EQ(cpu.getV(1), 0x10) << "V[1] should be equal to V[1] - V[2]";
-    EXPECT_EQ(cpu.getV(0xF), 1) << "VF should be set to 1 (no borrow)";
-    EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
+    EXPECT_EQ(cpu.getV(1), 0xE0) << "V[1] should be equal to V[1] - V[2]";
+    EXPECT_EQ(cpu.getV(0xF), 0) << "VF should be set to 0 (borrow)";
 }
 
 /**
