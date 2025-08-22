@@ -766,9 +766,41 @@ TEST_F(Chip8CPUTest, opcode_FX07_test)
     EXPECT_EQ(cpu.getPC(), 0x202) << "Program counter should be incremented by 2";
 }
 
-TEST_F(Chip8CPUTest, opcode_FX0A_test)
+TEST_F(Chip8CPUTest, opcode_FX0A_WaitForKey_NoKeyPressed)
 {
-    FAIL() << "Not yet implemented";
+    memory.write(0x200, 0xF1);
+    memory.write(0x201, 0x0A);
+
+    cpu.setV(1, 0x00);
+
+    // No key is pressed
+    for (int k = 0; k < 16; ++k)
+        input.setKeyState(k, false);
+
+    cpu.cycle();
+
+    // PC should not advance, V1 should not change
+    EXPECT_EQ(cpu.getPC(), 0x200);
+    EXPECT_EQ(cpu.getV(1), 0x00);
+}
+
+TEST_F(Chip8CPUTest, opcode_FX0A_WaitForKey_KeyPressed)
+{
+    memory.write(0x200, 0xF1);
+    memory.write(0x201, 0x0A); // FX0A, X=1
+
+    cpu.setV(1, 0x00); // Clear V1
+
+    // Simulate key 0xA pressed
+    for (int k = 0; k < 16; ++k)
+        input.setKeyState(k, false);
+    input.setKeyState(0xA, true);
+
+    cpu.cycle();
+
+    // PC should advance, V1 should be set to 0xA
+    EXPECT_EQ(cpu.getPC(), 0x202);
+    EXPECT_EQ(cpu.getV(1), 0xA);
 }
 
 TEST_F(Chip8CPUTest, opcode_FX15_test)

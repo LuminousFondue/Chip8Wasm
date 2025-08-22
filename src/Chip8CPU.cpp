@@ -648,7 +648,7 @@ void Chip8CPU::opcode_FX0A(uint16_t opcode)
     bool    keyPressed = false;
     for (int i = 0; i < 16; ++i)
     {
-        if (input_.wasKeyReleased(i))
+        if (input_.isKeyPressed(i))
         {
             this->setV(x, i);
             keyPressed = true;
