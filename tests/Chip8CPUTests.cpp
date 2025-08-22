@@ -37,7 +37,7 @@ TEST_F(Chip8CPUTest, Initialization_Reset)
     // Check that font is loaded
     for (int i = 0; i < 16; ++i)
     {
-        EXPECT_EQ(memory.read(i + 0x50), cpu.getFont(i * 5))
+        EXPECT_EQ(memory.read((i * 5) + 0x50), cpu.getFont(i * 5))
             << "Font data at index " << i << " should match";
     }
 }
