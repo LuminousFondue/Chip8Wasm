@@ -17,14 +17,14 @@ class Chip8GraphicsError : public std::runtime_error
 /**
  * Class representing the graphics data for the Chip8 emulator.
  */
-class Chip8GraphicsData
+class Chip8GraphicsBuffer
 {
   public:
     static constexpr int FRAMEBUFFER_WIDTH  = 64;
     static constexpr int FRAMEBUFFER_HEIGHT = 32;
 
-    Chip8GraphicsData();
-    ~Chip8GraphicsData();
+    Chip8GraphicsBuffer();
+    ~Chip8GraphicsBuffer();
 
     /**
      * Clears the framebuffer.

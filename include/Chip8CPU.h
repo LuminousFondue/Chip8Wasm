@@ -1,8 +1,8 @@
 #pragma once
 #include <array>
 
-#include "Chip8GraphicsData.h"
-#include "Chip8InputData.h"
+#include "Chip8GraphicsBuffer.h"
+#include "Chip8InputBuffer.h"
 #include "Chip8Memory.h"
 #include "Chip8Timer.h"
 
@@ -15,9 +15,9 @@ class Chip8CPU
      * @brief Constructs a Chip8CPU instance.
      * @param memory Reference to the Chip8Memory instance.
      * @param graphics Reference to the Chip8GraphicsData instance.
-     * @param input Reference to the Chip8InputData instance.
+     * @param input Reference to the Chip8InputBuffer instance.
      */
-    explicit Chip8CPU(Chip8Memory& memory, Chip8GraphicsData& graphics, Chip8InputData& input,
+    explicit Chip8CPU(Chip8Memory& memory, Chip8GraphicsBuffer& graphics, Chip8InputBuffer& input,
                       Chip8Timer& delayTimer, Chip8Timer& soundTimer);
 
     /**
@@ -116,11 +116,11 @@ class Chip8CPU
         0xF0, 0x80, 0xF0, 0x80, 0x80  // F
     };
 
-    Chip8Memory&       memory_;
-    Chip8GraphicsData& graphics_;
-    Chip8InputData&    input_;
-    Chip8Timer&        delayTimer_;
-    Chip8Timer&        soundTimer_;
+    Chip8Memory&         memory_;
+    Chip8GraphicsBuffer& graphics_;
+    Chip8InputBuffer&    input_;
+    Chip8Timer&          delayTimer_;
+    Chip8Timer&          soundTimer_;
 
     using OpcodeHandler = void (Chip8CPU::*)(uint16_t);
 

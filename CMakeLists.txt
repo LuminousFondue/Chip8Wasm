@@ -40,8 +40,8 @@ add_library(Chip8Core STATIC
     src/Chip8.cpp
     src/Chip8Memory.cpp
     src/Chip8CPU.cpp
-    src/Chip8GraphicsData.cpp
-    src/Chip8InputData.cpp
+    src/Chip8GraphicsBuffer.cpp
+    src/Chip8InputBuffer.cpp
     src/Chip8Timer.cpp
 )
 target_include_directories(Chip8Core PRIVATE include)
@@ -73,7 +73,7 @@ enable_testing()
 add_executable(
     Chip8Tests
     tests/Chip8MemoryTests.cpp
-    tests/Chip8GraphicsDataTests.cpp
+    tests/Chip8GraphicsBufferTests.cpp
     tests/Chip8CPUTests.cpp
 )
 target_compile_definitions(Chip8Tests PRIVATE UNIT_TEST)

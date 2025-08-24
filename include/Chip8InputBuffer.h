@@ -1,10 +1,10 @@
 #pragma once
 
-class Chip8InputData
+class Chip8InputBuffer
 {
   public:
-    Chip8InputData();
-    ~Chip8InputData();
+    Chip8InputBuffer();
+    ~Chip8InputBuffer();
 
     void setKeyState(int key, bool pressed);
     bool isKeyPressed(int key) const;

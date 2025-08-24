@@ -1,23 +1,23 @@
-#include "Chip8GraphicsData.h"
-
 #include <cstring>
 #include <iostream>
 
-Chip8GraphicsData::Chip8GraphicsData()
+#include "Chip8GraphicsBuffer.h"
+
+Chip8GraphicsBuffer::Chip8GraphicsBuffer()
 {
     clear();
 }
 
-Chip8GraphicsData::~Chip8GraphicsData()
+Chip8GraphicsBuffer::~Chip8GraphicsBuffer()
 {
 }
 
-void Chip8GraphicsData::clear()
+void Chip8GraphicsBuffer::clear()
 {
     std::memset(framebuffer_, 0, sizeof(framebuffer_));
 }
 
-void Chip8GraphicsData::setPixel(int x, int y, bool value)
+void Chip8GraphicsBuffer::setPixel(int x, int y, bool value)
 {
     if (x < 0 || x >= FRAMEBUFFER_WIDTH || y < 0 || y >= FRAMEBUFFER_HEIGHT)
     {
@@ -30,7 +30,7 @@ void Chip8GraphicsData::setPixel(int x, int y, bool value)
         framebuffer_[y * FRAMEBUFFER_WIDTH + x] &= 0x00000000;
 }
 
-bool Chip8GraphicsData::getPixel(int x, int y) const
+bool Chip8GraphicsBuffer::getPixel(int x, int y) const
 {
     if (x < 0 || x >= FRAMEBUFFER_WIDTH || y < 0 || y >= FRAMEBUFFER_HEIGHT)
     {
@@ -40,13 +40,13 @@ bool Chip8GraphicsData::getPixel(int x, int y) const
     return framebuffer_[y * FRAMEBUFFER_WIDTH + x] != 0;
 }
 
-std::vector<uint32_t> Chip8GraphicsData::dumpFrameBuffer() const
+std::vector<uint32_t> Chip8GraphicsBuffer::dumpFrameBuffer() const
 {
     return std::vector<uint32_t>(framebuffer_,
                                  framebuffer_ + sizeof(framebuffer_) / sizeof(uint32_t));
 }
 
-void Chip8GraphicsData::printScreen() const
+void Chip8GraphicsBuffer::printScreen() const
 {
     for (int y = 0; y < FRAMEBUFFER_HEIGHT; ++y)
     {

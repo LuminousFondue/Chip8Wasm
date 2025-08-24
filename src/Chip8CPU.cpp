@@ -5,7 +5,7 @@
 #include <bitset>
 #include <cstdio>
 
-Chip8CPU::Chip8CPU(Chip8Memory& memory, Chip8GraphicsData& graphics, Chip8InputData& input,
+Chip8CPU::Chip8CPU(Chip8Memory& memory, Chip8GraphicsBuffer& graphics, Chip8InputBuffer& input,
                    Chip8Timer& delayTimer, Chip8Timer& soundTimer)
     : memory_(memory), graphics_(graphics), input_(input), delayTimer_(delayTimer),
       soundTimer_(soundTimer)

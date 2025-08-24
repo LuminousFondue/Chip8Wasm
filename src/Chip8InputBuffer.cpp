@@ -1,6 +1,6 @@
-#include "Chip8InputData.h"
+#include "Chip8InputBuffer.h"
 
-Chip8InputData::Chip8InputData()
+Chip8InputBuffer::Chip8InputBuffer()
 {
     for (int i = 0; i < 16; ++i)
     {
@@ -8,9 +8,9 @@ Chip8InputData::Chip8InputData()
     }
 }
 
-Chip8InputData::~Chip8InputData() = default;
+Chip8InputBuffer::~Chip8InputBuffer() = default;
 
-void Chip8InputData::setKeyState(int key, bool pressed)
+void Chip8InputBuffer::setKeyState(int key, bool pressed)
 {
     if (key >= 0 && key < 16)
     {
@@ -18,7 +18,7 @@ void Chip8InputData::setKeyState(int key, bool pressed)
     }
 }
 
-bool Chip8InputData::isKeyPressed(int key) const
+bool Chip8InputBuffer::isKeyPressed(int key) const
 {
     if (key >= 0 && key < 16)
     {

@@ -1,18 +1,18 @@
 #include <gtest/gtest.h>
 
 #include "Chip8CPU.h"
-#include "Chip8GraphicsData.h"
+#include "Chip8GraphicsBuffer.h"
 #include "Chip8Memory.h"
 
 class Chip8CPUTest : public ::testing::Test
 {
   protected:
-    Chip8Memory       memory;
-    Chip8GraphicsData graphics;
-    Chip8InputData    input;
-    Chip8Timer        delayTimer;
-    Chip8Timer        soundTimer;
-    Chip8CPU          cpu;
+    Chip8Memory         memory;
+    Chip8GraphicsBuffer graphics;
+    Chip8InputBuffer    input;
+    Chip8Timer          delayTimer;
+    Chip8Timer          soundTimer;
+    Chip8CPU            cpu;
 
     Chip8CPUTest() : cpu(memory, graphics, input, delayTimer, soundTimer) {}
 };
@@ -28,9 +28,9 @@ TEST_F(Chip8CPUTest, Initialization_Reset)
         EXPECT_EQ(cpu.getV(i), 0);
     }
 
-    for (int y = 0; y < Chip8GraphicsData::FRAMEBUFFER_HEIGHT; ++y)
+    for (int y = 0; y < Chip8GraphicsBuffer::FRAMEBUFFER_HEIGHT; ++y)
     {
-        for (int x = 0; x < Chip8GraphicsData::FRAMEBUFFER_WIDTH; ++x)
+        for (int x = 0; x < Chip8GraphicsBuffer::FRAMEBUFFER_WIDTH; ++x)
         {
             EXPECT_EQ(graphics.getPixel(x, y), 0)
                 << "Pixel at (" << x << ", " << y << ") should be off";
