@@ -51,17 +51,20 @@ target_link_libraries(Chip8Core PRIVATE spdlog::spdlog)
 # Main Executable
 # -----------------------------------------------------------------------------
 add_executable(
-    Chip8Wasm
+    Chip8Emulator
     src/main.cpp
+    src/Chip8Emulator/Chip8Display.cpp
+    src/Chip8Emulator/Chip8Input.cpp
+    src/Chip8Emulator/Chip8ROMLoader.cpp
 )
 
 target_link_libraries(
-    Chip8Wasm PRIVATE
+    Chip8Emulator PRIVATE
     spdlog::spdlog
     Chip8Core
     SDL2::SDL2
 )
-target_include_directories(Chip8Wasm PRIVATE include)
+target_include_directories(Chip8Emulator PRIVATE include)
 
 
 # -----------------------------------------------------------------------------
@@ -87,7 +90,7 @@ gtest_discover_tests(Chip8Tests)
 # -----------------------------------------------------------------------------
 # Install
 # -----------------------------------------------------------------------------
-install(TARGETS Chip8Wasm DESTINATION bin)
+install(TARGETS Chip8Emulator DESTINATION bin)
 
 # -----------------------------------------------------------------------------
 # Documentation (Doxygen)

@@ -21,7 +21,7 @@ class Chip8
     void                                  stop();
     const chip8core::Chip8GraphicsBuffer& getGraphics() const { return graphics_; }
     const chip8core::Chip8Timer&          getSoundTimer() const { return soundTimer_; }
-    chip8core::Chip8InputBuffer&          getInputData() { return input_; }
+    chip8core::Chip8InputBuffer&          getInput() { return input_; }
 
   private:
     chip8core::Chip8Memory         memory_;

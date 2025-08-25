@@ -33,7 +33,7 @@ void Chip8::loadROM(const uint8_t* romData, size_t romSize)
     {
         memory_.write(0x200 + i, romData[i]);
     }
-    spdlog::debug("ROM loaded into memory");
+    spdlog::info("ROM loaded into memory");
 }
 
 void Chip8::cycle()
