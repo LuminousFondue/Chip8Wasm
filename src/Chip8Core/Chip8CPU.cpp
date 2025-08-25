@@ -1,10 +1,11 @@
-#include "Chip8CPU.h"
+#include "Chip8Core/Chip8CPU.h"
 
 #include <spdlog/spdlog.h>
 
 #include <bitset>
 #include <cstdio>
-
+namespace chip8core
+{
 Chip8CPU::Chip8CPU(Chip8Memory& memory, Chip8GraphicsBuffer& graphics, Chip8InputBuffer& input,
                    Chip8Timer& delayTimer, Chip8Timer& soundTimer)
     : memory_(memory), graphics_(graphics), input_(input), delayTimer_(delayTimer),
@@ -757,3 +758,4 @@ void Chip8CPU::opcode_FX65(uint16_t opcode)
         this->setV(i, memory_.read(this->getI() + i));
     }
 }
+} // namespace chip8core

@@ -1,6 +1,7 @@
 #pragma once
-
 #include <cstdint>
+namespace chip8core
+{
 
 class Chip8Timer
 {
@@ -17,3 +18,4 @@ class Chip8Timer
   private:
     uint8_t currentValue_;
 };
+} // namespace chip8core

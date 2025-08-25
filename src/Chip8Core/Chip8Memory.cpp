@@ -1,10 +1,11 @@
-#include "Chip8Memory.h"
+#include "Chip8Core/Chip8Memory.h"
 
 #include <spdlog/spdlog.h>
 
 #include <cstdio>
 #include <cstring>
-
+namespace chip8core
+{
 Chip8Memory::Chip8Memory()
 {
     initialize();
@@ -76,3 +77,4 @@ std::vector<uint8_t> Chip8Memory::dump() const
 {
     return std::vector<uint8_t>(memory_, memory_ + MEMORY_SIZE);
 }
+} // namespace chip8core

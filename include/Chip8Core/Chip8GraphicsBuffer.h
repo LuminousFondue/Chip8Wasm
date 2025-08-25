@@ -1,8 +1,9 @@
 #pragma once
-
 #include <cstdint>
 #include <stdexcept>
 #include <vector>
+namespace chip8core
+{
 
 /**
  * Custom exception class for Chip8 graphics errors.
@@ -57,3 +58,4 @@ class Chip8GraphicsBuffer
   private:
     uint32_t framebuffer_[FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT];
 };
+} // namespace chip8core

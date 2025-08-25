@@ -1,10 +1,12 @@
 #pragma once
 #include <array>
 
-#include "Chip8GraphicsBuffer.h"
-#include "Chip8InputBuffer.h"
-#include "Chip8Memory.h"
-#include "Chip8Timer.h"
+#include "Chip8Core/Chip8GraphicsBuffer.h"
+#include "Chip8Core/Chip8InputBuffer.h"
+#include "Chip8Core/Chip8Memory.h"
+#include "Chip8Core/Chip8Timer.h"
+namespace chip8core
+{
 
 class Chip8CPU
 {
@@ -177,3 +179,4 @@ class Chip8CPU
     void opcode_FX55(uint16_t opcode);
     void opcode_FX65(uint16_t opcode);
 };
+} // namespace chip8core

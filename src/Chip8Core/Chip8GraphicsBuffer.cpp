@@ -1,8 +1,9 @@
+#include "Chip8Core/Chip8GraphicsBuffer.h"
+
 #include <cstring>
 #include <iostream>
-
-#include "Chip8GraphicsBuffer.h"
-
+namespace chip8core
+{
 Chip8GraphicsBuffer::Chip8GraphicsBuffer()
 {
     clear();
@@ -57,3 +58,4 @@ void Chip8GraphicsBuffer::printScreen() const
         std::cout << std::endl;
     }
 }
+} // namespace chip8core

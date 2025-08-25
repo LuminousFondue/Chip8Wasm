@@ -1,9 +1,10 @@
-#include "Chip8.h"
+#include "Chip8Core/Chip8.h"
 
 #include <spdlog/spdlog.h>
 
 #include <cstdio>
-
+namespace chip8core
+{
 Chip8::Chip8()
     : memory_(), graphics_(), cpu_(memory_, graphics_, input_, delayTimer_, soundTimer_),
       isPaused_(false)
@@ -54,3 +55,4 @@ void Chip8::resume()
 {
     isPaused_ = false;
 }
+} // namespace chip8core

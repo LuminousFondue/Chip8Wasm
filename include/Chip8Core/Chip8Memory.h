@@ -2,6 +2,8 @@
 #include <cstdint>
 #include <stdexcept>
 #include <vector>
+namespace chip8core
+{
 
 /**
  * @brief Exception class for Chip8Memory errors.
@@ -85,3 +87,4 @@ class Chip8Memory
      */
     void initialize();
 };
+} // namespace chip8core

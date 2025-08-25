@@ -1,5 +1,6 @@
-#include "Chip8Timer.h"
-
+#include "Chip8Core/Chip8Timer.h"
+namespace chip8core
+{
 Chip8Timer::Chip8Timer() : currentValue_(0)
 {
 }
@@ -20,3 +21,4 @@ bool Chip8Timer::isActive()
 {
     return (currentValue_ > 0);
 }
+} // namespace chip8core

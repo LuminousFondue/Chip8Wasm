@@ -1,5 +1,6 @@
-#include "Chip8InputBuffer.h"
-
+#include "Chip8Core/Chip8InputBuffer.h"
+namespace chip8core
+{
 Chip8InputBuffer::Chip8InputBuffer()
 {
     for (int i = 0; i < 16; ++i)
@@ -26,3 +27,4 @@ bool Chip8InputBuffer::isKeyPressed(int key) const
     }
     return false;
 }
+} // namespace chip8core

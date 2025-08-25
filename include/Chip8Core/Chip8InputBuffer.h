@@ -1,5 +1,6 @@
 #pragma once
-
+namespace chip8core
+{
 class Chip8InputBuffer
 {
   public:
@@ -12,3 +13,4 @@ class Chip8InputBuffer
   private:
     bool keyStates[16];
 };
+} // namespace chip8core
