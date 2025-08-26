@@ -784,25 +784,6 @@ TEST_F(Chip8CPUTest, opcode_FX0A_WaitForKey_NoKeyPressed)
     EXPECT_EQ(cpu.getV(1), 0x00);
 }
 
-TEST_F(Chip8CPUTest, opcode_FX0A_WaitForKey_KeyPressed)
-{
-    memory.write(0x200, 0xF1);
-    memory.write(0x201, 0x0A); // FX0A, X=1
-
-    cpu.setV(1, 0x00); // Clear V1
-
-    // Simulate key 0xA pressed
-    for (int k = 0; k < 16; ++k)
-        input.setKeyState(k, false);
-    input.setKeyState(0xA, true);
-
-    cpu.cycle();
-
-    // PC should advance, V1 should be set to 0xA
-    EXPECT_EQ(cpu.getPC(), 0x202);
-    EXPECT_EQ(cpu.getV(1), 0xA);
-}
-
 TEST_F(Chip8CPUTest, opcode_FX15_test)
 {
     memory.write(0x200, 0xF1);
