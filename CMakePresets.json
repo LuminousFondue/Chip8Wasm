@@ -2,15 +2,45 @@
     "version": 8,
     "configurePresets": [
         {
-            "name": "Chip8_Executable",
-            "displayName": "GCC 13.3.0 x86_64-linux-gnu",
-            "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
+            "name": "Chip8Emulator_Release",
+            "displayName": "Chip8 Emulator (Release)",
             "binaryDir": "${sourceDir}/out/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
                 "CMAKE_C_COMPILER": "/usr/bin/gcc",
                 "CMAKE_CXX_COMPILER": "/usr/bin/g++",
-                "CMAKE_BUILD_TYPE": "Debug"
+                "CMAKE_BUILD_TYPE": "Release",
+                "BUILD_EMULATOR": "ON",
+                "BUILD_WASM": "OFF",
+                "BUILD_TESTS": "OFF"
+            }
+        },
+        {
+            "name": "Chip8Emulator_Debug",
+            "displayName": "Chip8 Emulator (Debug)",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_C_COMPILER": "/usr/bin/gcc",
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "BUILD_EMULATOR": "ON",
+                "BUILD_WASM": "OFF",
+                "BUILD_TESTS": "ON"
+            }
+        },
+        {
+            "name": "Chip8Wasm_Debug",
+            "displayName": "Chip8 WASM (Debug)",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_C_COMPILER": "/home/kevin/emsdk/upstream/emscripten/emcc",
+                "CMAKE_CXX_COMPILER": "/home/kevin/emsdk/upstream/emscripten/em++",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "BUILD_EMULATOR": "OFF",
+                "BUILD_WASM": "ON",
+                "BUILD_TESTS": "OFF"
             }
         }
     ]
