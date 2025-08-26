@@ -125,7 +125,7 @@ void Chip8CPU::invalidOpcode(uint16_t opcode)
 
 void Chip8CPU::decodeOpcode(uint16_t opcode)
 {
-    spdlog::debug("Decoding opcode: {:#04x}", opcode);
+    spdlog::trace("Decoding opcode: {:#04x}", opcode);
 
     // Extract the first nibble to determine the main opcode
     uint8_t main_opcode = (opcode >> 12) & 0xF;
@@ -143,7 +143,7 @@ void Chip8CPU::decodeOpcode(uint16_t opcode)
 
 void Chip8CPU::handle_0XXX(uint16_t opcode)
 {
-    spdlog::debug("Handling 0XXX opcode: {:#04x}", opcode);
+    spdlog::trace("Handling 0XXX opcode: {:#04x}", opcode);
 
     // Extract the fourth nibble to determine the specific 0XXX opcode
     uint8_t sub_opcode = opcode & 0x000F;
@@ -160,7 +160,7 @@ void Chip8CPU::handle_0XXX(uint16_t opcode)
 
 void Chip8CPU::handle_8XXX(uint16_t opcode)
 {
-    spdlog::debug("Handling 8XXX opcode: {:#04x}", opcode);
+    spdlog::trace("Handling 8XXX opcode: {:#04x}", opcode);
 
     uint8_t sub_opcode = opcode & 0x000F;
 
@@ -176,7 +176,7 @@ void Chip8CPU::handle_8XXX(uint16_t opcode)
 
 void Chip8CPU::handle_EXXX(uint16_t opcode)
 {
-    spdlog::debug("Handling EXXX opcode: {:#04x}", opcode);
+    spdlog::trace("Handling EXXX opcode: {:#04x}", opcode);
 
     // Extract the fourth nibble to determine the specific EXXX opcode
     uint8_t sub_opcode = opcode & 0x000F;
@@ -193,7 +193,7 @@ void Chip8CPU::handle_EXXX(uint16_t opcode)
 
 void Chip8CPU::handle_FXXX(uint16_t opcode)
 {
-    spdlog::debug("Handling FXXX opcode: {:#04x}", opcode);
+    spdlog::trace("Handling FXXX opcode: {:#04x}", opcode);
 
     // Extract the fourth nibble to determine the specific FXXX opcode
     uint8_t sub_opcode = opcode & 0x00FF;
@@ -213,7 +213,7 @@ void Chip8CPU::handle_FXXX(uint16_t opcode)
  */
 void Chip8CPU::opcode_00E0(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 00E0");
+    spdlog::trace("Running Opcode: 00E0");
     graphics_.clear();
 }
 
@@ -226,7 +226,7 @@ void Chip8CPU::opcode_00E0(uint16_t opcode)
  */
 void Chip8CPU::opcode_00EE(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 00EE");
+    spdlog::trace("Running Opcode: 00EE");
     this->PC_ = this->stack_[this->SP_];
     this->SP_--;
 }
@@ -238,7 +238,7 @@ void Chip8CPU::opcode_00EE(uint16_t opcode)
  */
 void Chip8CPU::opcode_1NNN(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 1NNN");
+    spdlog::trace("Running Opcode: 1NNN");
     uint16_t address = opcode & 0x0FFF;
     this->PC_        = address;
 }
@@ -252,7 +252,7 @@ void Chip8CPU::opcode_1NNN(uint16_t opcode)
  */
 void Chip8CPU::opcode_2NNN(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 2NNN");
+    spdlog::trace("Running Opcode: 2NNN");
     uint16_t address = opcode & 0x0FFF;
     this->SP_++;
     this->stack_[this->SP_] = this->PC_;
@@ -267,7 +267,7 @@ void Chip8CPU::opcode_2NNN(uint16_t opcode)
  */
 void Chip8CPU::opcode_3XKK(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 3XKK");
+    spdlog::trace("Running Opcode: 3XKK");
     uint8_t kk = opcode & 0xFF;
     uint8_t x  = this->getNibble(opcode, 2);
     if (this->getV(x) == kk)
@@ -284,7 +284,7 @@ void Chip8CPU::opcode_3XKK(uint16_t opcode)
  */
 void Chip8CPU::opcode_4XKK(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 4XKK");
+    spdlog::trace("Running Opcode: 4XKK");
     uint8_t kk = opcode & 0xFF;
     uint8_t x  = this->getNibble(opcode, 2);
     if (this->getV(x) != kk)
@@ -301,7 +301,7 @@ void Chip8CPU::opcode_4XKK(uint16_t opcode)
  */
 void Chip8CPU::opcode_5XY0(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 5XY0");
+    spdlog::trace("Running Opcode: 5XY0");
     uint8_t x = this->getNibble(opcode, 2);
     uint8_t y = this->getNibble(opcode, 1);
     if (this->getV(x) == this->getV(y))
@@ -317,7 +317,7 @@ void Chip8CPU::opcode_5XY0(uint16_t opcode)
  */
 void Chip8CPU::opcode_6XKK(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 6XKK");
+    spdlog::trace("Running Opcode: 6XKK");
     uint8_t x  = this->getNibble(opcode, 2);
     uint8_t kk = opcode & 0xFF;
     this->setV(x, kk);
@@ -331,7 +331,7 @@ void Chip8CPU::opcode_6XKK(uint16_t opcode)
  */
 void Chip8CPU::opcode_7XKK(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 7XKK");
+    spdlog::trace("Running Opcode: 7XKK");
     uint8_t x  = this->getNibble(opcode, 2);
     uint8_t kk = opcode & 0xFF;
     this->setV(x, this->getV(x) + kk);
@@ -344,7 +344,7 @@ void Chip8CPU::opcode_7XKK(uint16_t opcode)
  */
 void Chip8CPU::opcode_8XY0(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 8XY0");
+    spdlog::trace("Running Opcode: 8XY0");
     uint8_t x = this->getNibble(opcode, 2);
     uint8_t y = this->getNibble(opcode, 1);
     this->setV(x, this->getV(y));
@@ -358,7 +358,7 @@ void Chip8CPU::opcode_8XY0(uint16_t opcode)
  */
 void Chip8CPU::opcode_8XY1(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 8XY1");
+    spdlog::trace("Running Opcode: 8XY1");
     uint8_t x = this->getNibble(opcode, 2);
     uint8_t y = this->getNibble(opcode, 1);
     this->setV(x, this->getV(x) | this->getV(y));
@@ -372,7 +372,7 @@ void Chip8CPU::opcode_8XY1(uint16_t opcode)
  */
 void Chip8CPU::opcode_8XY2(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 8XY2");
+    spdlog::trace("Running Opcode: 8XY2");
     uint8_t x = this->getNibble(opcode, 2);
     uint8_t y = this->getNibble(opcode, 1);
     this->setV(x, this->getV(x) & this->getV(y));
@@ -386,7 +386,7 @@ void Chip8CPU::opcode_8XY2(uint16_t opcode)
  */
 void Chip8CPU::opcode_8XY3(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 8XY3");
+    spdlog::trace("Running Opcode: 8XY3");
     uint8_t x = this->getNibble(opcode, 2);
     uint8_t y = this->getNibble(opcode, 1);
     this->setV(x, this->getV(x) ^ this->getV(y));
@@ -402,7 +402,7 @@ void Chip8CPU::opcode_8XY3(uint16_t opcode)
  */
 void Chip8CPU::opcode_8XY4(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 8XY4");
+    spdlog::trace("Running Opcode: 8XY4");
     uint8_t  x   = this->getNibble(opcode, 2);
     uint8_t  y   = this->getNibble(opcode, 1);
     uint16_t sum = this->getV(x) + this->getV(y);
@@ -418,7 +418,7 @@ void Chip8CPU::opcode_8XY4(uint16_t opcode)
  */
 void Chip8CPU::opcode_8XY5(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 8XY5");
+    spdlog::trace("Running Opcode: 8XY5");
     uint8_t  x          = this->getNibble(opcode, 2);
     uint8_t  y          = this->getNibble(opcode, 1);
     uint16_t difference = this->getV(x) - this->getV(y);
@@ -434,7 +434,7 @@ void Chip8CPU::opcode_8XY5(uint16_t opcode)
  */
 void Chip8CPU::opcode_8XY6(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 8XY6");
+    spdlog::trace("Running Opcode: 8XY6");
     uint8_t x    = this->getNibble(opcode, 2);
     uint8_t xVal = this->getV(x);
     this->setV(x, this->getV(x) >> 1);
@@ -456,7 +456,7 @@ void Chip8CPU::opcode_8XY6(uint16_t opcode)
  */
 void Chip8CPU::opcode_8XY7(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 8XY7");
+    spdlog::trace("Running Opcode: 8XY7");
     uint8_t  x          = this->getNibble(opcode, 2);
     uint8_t  y          = this->getNibble(opcode, 1);
     uint16_t difference = this->getV(y) - this->getV(x);
@@ -472,7 +472,7 @@ void Chip8CPU::opcode_8XY7(uint16_t opcode)
  */
 void Chip8CPU::opcode_8XYE(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 8XYE");
+    spdlog::trace("Running Opcode: 8XYE");
     uint8_t x    = this->getNibble(opcode, 2);
     uint8_t xVal = this->getV(x);
     // Shift Vx left by 1
@@ -496,7 +496,7 @@ void Chip8CPU::opcode_8XYE(uint16_t opcode)
  */
 void Chip8CPU::opcode_9XY0(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: 9XY0");
+    spdlog::trace("Running Opcode: 9XY0");
     uint8_t x = this->getNibble(opcode, 2);
     uint8_t y = this->getNibble(opcode, 1);
     if (this->getV(x) != this->getV(y))
@@ -512,7 +512,7 @@ void Chip8CPU::opcode_9XY0(uint16_t opcode)
  */
 void Chip8CPU::opcode_ANNN(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: ANNN");
+    spdlog::trace("Running Opcode: ANNN");
     uint16_t address = opcode & 0x0FFF;
     this->I_         = address;
 }
@@ -524,7 +524,7 @@ void Chip8CPU::opcode_ANNN(uint16_t opcode)
  */
 void Chip8CPU::opcode_BNNN(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: BNNN");
+    spdlog::trace("Running Opcode: BNNN");
     uint16_t address = opcode & 0x0FFF;
     this->PC_        = address + this->getV(0);
 }
@@ -538,7 +538,7 @@ void Chip8CPU::opcode_BNNN(uint16_t opcode)
  */
 void Chip8CPU::opcode_CXKK(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: CXKK");
+    spdlog::trace("Running Opcode: CXKK");
     uint8_t x  = this->getNibble(opcode, 2);
     uint8_t kk = opcode & 0x00FF;
     this->setV(x, (rand() % 256) & kk);
@@ -558,7 +558,7 @@ void Chip8CPU::opcode_CXKK(uint16_t opcode)
  */
 void Chip8CPU::opcode_DXYN(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: DXYN");
+    spdlog::trace("Running Opcode: DXYN");
     uint8_t x = this->getNibble(opcode, 2);
     uint8_t y = this->getNibble(opcode, 1);
     uint8_t n = this->getNibble(opcode, 0);
@@ -568,7 +568,6 @@ void Chip8CPU::opcode_DXYN(uint16_t opcode)
     {
         uint8_t     sprite      = memory_.read(I_ + i);
         std::string sprite_bits = std::bitset<8>(sprite).to_string();
-        spdlog::trace("Drawing sprite data: {} at ({}, {})", sprite_bits, getV(x), getV(y));
         for (int j = 0; j < 8; ++j)
         {
             // Calculate pixel position
@@ -600,10 +599,11 @@ void Chip8CPU::opcode_DXYN(uint16_t opcode)
  */
 void Chip8CPU::opcode_EX9E(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: EX9E");
+    spdlog::trace("Running Opcode: EX9E");
     uint8_t x = this->getNibble(opcode, 2);
-    if (input_.isKeyPressed(this->getV(x)))
+    if (input_.getKeyState(this->getV(x)))
     {
+        spdlog::debug("Key 0x{} is pressed", this->getV(x));
         this->PC_ += 2;
     }
 }
@@ -616,9 +616,9 @@ void Chip8CPU::opcode_EX9E(uint16_t opcode)
  */
 void Chip8CPU::opcode_EXA1(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: EXA1");
+    spdlog::trace("Running Opcode: EXA1");
     uint8_t x = this->getNibble(opcode, 2);
-    if (!input_.isKeyPressed(this->getV(x)))
+    if (!input_.getKeyState(this->getV(x)))
     {
         this->PC_ += 2;
     }
@@ -631,7 +631,7 @@ void Chip8CPU::opcode_EXA1(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX07(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: FX07");
+    spdlog::trace("Running Opcode: FX07");
     uint8_t x = this->getNibble(opcode, 2);
     this->setV(x, delayTimer_.getValue());
 }
@@ -639,17 +639,17 @@ void Chip8CPU::opcode_FX07(uint16_t opcode)
 /**
  * FX0A: LD Vx, K - Wait for a key press, store the value of the key in Vx
  *
- * The interpreter waits for a key press, and when a key is pressed,
+ * The interpreter waits for a key release, and when a key is released,
  * the value of the key is stored in register Vx.
  */
 void Chip8CPU::opcode_FX0A(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: FX0A");
+    spdlog::trace("Running Opcode: FX0A");
     uint8_t x          = this->getNibble(opcode, 2);
     bool    keyPressed = false;
     for (int i = 0; i < 16; ++i)
     {
-        if (input_.isKeyPressed(i))
+        if (input_.wasKeyReleased(i))
         {
             this->setV(x, i);
             keyPressed = true;
@@ -669,7 +669,7 @@ void Chip8CPU::opcode_FX0A(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX15(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: FX15");
+    spdlog::trace("Running Opcode: FX15");
     uint8_t x = this->getNibble(opcode, 2);
     delayTimer_.setValue(this->getV(x));
 }
@@ -681,7 +681,7 @@ void Chip8CPU::opcode_FX15(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX18(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: FX18");
+    spdlog::trace("Running Opcode: FX18");
     uint8_t x = this->getNibble(opcode, 2);
     soundTimer_.setValue(this->getV(x));
 }
@@ -693,7 +693,7 @@ void Chip8CPU::opcode_FX18(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX1E(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: FX1E");
+    spdlog::trace("Running Opcode: FX1E");
     uint8_t x = this->getNibble(opcode, 2);
     this->setI(this->getI() + this->getV(x));
 }
@@ -706,7 +706,7 @@ void Chip8CPU::opcode_FX1E(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX29(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: FX29");
+    spdlog::trace("Running Opcode: FX29");
     uint8_t x = this->getNibble(opcode, 2);
     this->setI(0x50 + (this->getV(x) * 5));
 }
@@ -719,7 +719,7 @@ void Chip8CPU::opcode_FX29(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX33(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: FX33");
+    spdlog::trace("Running Opcode: FX33");
     uint8_t x     = this->getNibble(opcode, 2);
     uint8_t value = this->getV(x);
     memory_.write(this->getI(), (value / 100) % 10);
@@ -735,7 +735,7 @@ void Chip8CPU::opcode_FX33(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX55(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: FX55");
+    spdlog::trace("Running Opcode: FX55");
     uint8_t x = this->getNibble(opcode, 2);
     for (uint8_t i = 0; i <= x; ++i)
     {
@@ -751,7 +751,7 @@ void Chip8CPU::opcode_FX55(uint16_t opcode)
  */
 void Chip8CPU::opcode_FX65(uint16_t opcode)
 {
-    spdlog::debug("Running Opcode: FX65");
+    spdlog::trace("Running Opcode: FX65");
     uint8_t x = this->getNibble(opcode, 2);
     for (uint8_t i = 0; i <= x; ++i)
     {

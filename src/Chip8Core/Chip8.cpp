@@ -5,9 +5,7 @@
 #include <cstdio>
 namespace chip8core
 {
-Chip8::Chip8()
-    : memory_(), graphics_(), cpu_(memory_, graphics_, input_, delayTimer_, soundTimer_),
-      isPaused_(false)
+Chip8::Chip8() : memory_(), graphics_(), cpu_(memory_, graphics_, input_, delayTimer_, soundTimer_)
 {
     spdlog::debug("Chip8 Created");
 }
@@ -38,21 +36,33 @@ void Chip8::loadROM(const uint8_t* romData, size_t romSize)
 
 void Chip8::cycle()
 {
-    if (!isPaused_)
+    using namespace std::chrono;
+    auto   now   = steady_clock::now();
+    double delta = duration<double>(now - lastTick_).count();
+    lastTick_    = now;
+
+    cpuAccumulator_ += delta;
+    timerAccumulator_ += delta;
+
+    // Run as many CPU cycles as needed
+    while (cpuAccumulator_ >= CPU_CYCLE_TIME)
     {
         cpu_.cycle();
-        delayTimer_.update();
-        soundTimer_.update();
+        input_.syncKeyStates();
+        cpuAccumulator_ -= CPU_CYCLE_TIME;
+    }
+
+    // Update timers at 60Hz
+    while (timerAccumulator_ >= TIMER_CYCLE_TIME)
+    {
+        updateTimers();
+        timerAccumulator_ -= TIMER_CYCLE_TIME;
     }
 }
 
-void Chip8::pause()
+void Chip8::updateTimers()
 {
-    isPaused_ = true;
-}
-
-void Chip8::resume()
-{
-    isPaused_ = false;
+    delayTimer_.update();
+    soundTimer_.update();
 }
 } // namespace chip8core

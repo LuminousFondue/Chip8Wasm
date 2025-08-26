@@ -56,6 +56,7 @@ add_executable(
     src/Chip8Emulator/Chip8Display.cpp
     src/Chip8Emulator/Chip8Input.cpp
     src/Chip8Emulator/Chip8ROMLoader.cpp
+    src/Chip8Emulator/Chip8Audio.cpp
 )
 
 target_link_libraries(
