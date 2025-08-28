@@ -75,5 +75,8 @@
     "cinttypes": "cpp",
     "typeinfo": "cpp",
     "variant": "cpp"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

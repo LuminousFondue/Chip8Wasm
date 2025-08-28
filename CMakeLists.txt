@@ -85,6 +85,10 @@ if(BUILD_WASM)
     add_executable(
         Chip8Wasm
         src/Chip8Wasm/main.cpp
+        src/Chip8Emulator/Chip8Display.cpp
+        src/Chip8Emulator/Chip8Input.cpp
+        src/Chip8Emulator/Chip8ROMLoader.cpp
+        src/Chip8Emulator/Chip8Audio.cpp
     )
 
     target_link_libraries(
@@ -94,7 +98,11 @@ if(BUILD_WASM)
     )
     target_include_directories(Chip8Wasm PRIVATE include)
     set_target_properties(Chip8Wasm PROPERTIES SUFFIX ".html")
-    target_link_options(Chip8Wasm PRIVATE --bind -sUSE_SDL=2 -oChip8Wasm.html)
+    target_link_options(Chip8Wasm PRIVATE
+    --bind
+    -sUSE_SDL=2
+    -oChip8Wasm.html
+)
 endif()
 
 # -----------------------------------------------------------------------------

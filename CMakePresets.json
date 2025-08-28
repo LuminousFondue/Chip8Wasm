@@ -30,14 +30,14 @@
             }
         },
         {
-            "name": "Chip8Wasm_Debug",
-            "displayName": "Chip8 WASM (Debug)",
+            "name": "Chip8Wasm_Release",
+            "displayName": "Chip8 WASM (Release)",
             "binaryDir": "${sourceDir}/out/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
                 "CMAKE_C_COMPILER": "/home/kevin/emsdk/upstream/emscripten/emcc",
                 "CMAKE_CXX_COMPILER": "/home/kevin/emsdk/upstream/emscripten/em++",
-                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_BUILD_TYPE": "Release",
                 "BUILD_EMULATOR": "OFF",
                 "BUILD_WASM": "ON",
                 "BUILD_TESTS": "OFF"
