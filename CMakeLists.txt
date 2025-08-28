@@ -108,14 +108,14 @@ if(BUILD_WASM)
     -sEXPORTED_RUNTIME_METHODS=ccall,cwrap
     --shell-file ${CMAKE_SOURCE_DIR}/src/Chip8Wasm/template.html
     )
-        
-    # Copy the 'roms' folder to the build directory
-    add_custom_command(TARGET Chip8Wasm PRE_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${CMAKE_SOURCE_DIR}/roms
-            $<TARGET_FILE_DIR:Chip8Wasm>/roms
-        COMMENT "Copying roms folder to build directory"
-    )
+    set(WASM_DIST_DIR "${CMAKE_SOURCE_DIR}/chip8Wasm")
+
+    add_custom_command(TARGET Chip8Wasm POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:Chip8Wasm> ${WASM_DIST_DIR}/index.html
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE_DIR:Chip8Wasm>/Chip8Wasm.js ${WASM_DIST_DIR}/Chip8Wasm.js
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE_DIR:Chip8Wasm>/Chip8Wasm.wasm ${WASM_DIST_DIR}/Chip8Wasm.wasm
+    COMMENT "Copying and renaming WASM files to ${WASM_DIST_DIR}"
+)
 endif()
 
 # -----------------------------------------------------------------------------
