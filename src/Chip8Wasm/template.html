@@ -212,6 +212,40 @@
       }
     });
   </script>
+  <div>PC: <span id="pc"></span></div>
+<div>V0: <span id="v0"></span></div>
+<div>V1: <span id="v1"></span></div>
+<div>V2: <span id="v2"></span></div>
+<div>V3: <span id="v3"></span></div>
+<div>V4: <span id="v4"></span></div>
+<div>V5: <span id="v5"></span></div>
+<div>V6: <span id="v6"></span></div>
+<div>V7: <span id="v7"></span></div>
+<div>V8: <span id="v8"></span></div>
+<div>V9: <span id="v9"></span></div>
+<div>VA: <span id="vA"></span></div>
+<div>VB: <span id="vB"></span></div>
+<div>VC: <span id="vC"></span></div>
+<div>VD: <span id="vD"></span></div>
+<div>VE: <span id="vE"></span></div>
+<div>VF: <span id="vF"></span></div>
+
+<script>
+function updateCpuInfo() {
+   // Call the function and get the pointer
+  const ptr = Module.ccall('get_cpu_info', 'number', [], []);
+  // Read 17 16-bit values from WASM memory
+  const cpuInfo = new Uint16Array(HEAPU16.buffer, ptr, 17);
+
+  document.getElementById('pc').textContent = '0x' + cpuInfo[0].toString(16).toUpperCase().padStart(2, '0');
+  for (let i = 0; i < 16; i++) {
+    document.getElementById('v' + i.toString(16).toUpperCase()).textContent = '0x' + cpuInfo[i + 1].toString(16).toUpperCase().padStart(2, '0');
+  }
+}
+Module.onRuntimeInitialized = function() {
+  setInterval(updateCpuInfo, 100);
+}
+</script>
   {{{ SCRIPT }}}
 </body>
 

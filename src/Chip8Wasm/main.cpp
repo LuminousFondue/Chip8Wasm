@@ -38,6 +38,16 @@ extern "C"
         spdlog::info("ROM loaded: {}", filename);
         initAudio();
     }
+
+    EMSCRIPTEN_KEEPALIVE
+    const uint16_t* get_cpu_info()
+    {
+        static uint16_t info[17];
+        info[0] = chip8.getCPU().getPC();
+        for (int i = 0; i < 16; ++i)
+            info[i + 1] = chip8.getCPU().getV(i);
+        return info;
+    }
 }
 
 bool emulationIteration(double time, void* userData)

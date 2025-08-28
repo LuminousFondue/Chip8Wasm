@@ -25,6 +25,7 @@ class Chip8
     const chip8core::Chip8GraphicsBuffer& getGraphics() const { return graphics_; }
     const chip8core::Chip8Timer&          getSoundTimer() const { return soundTimer_; }
     chip8core::Chip8InputBuffer&          getInput() { return input_; }
+    const chip8core::Chip8CPU&            getCPU() const { return cpu_; }
 
   private:
     chip8core::Chip8Memory         memory_;

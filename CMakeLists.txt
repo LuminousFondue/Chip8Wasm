@@ -104,7 +104,7 @@ if(BUILD_WASM)
     -sUSE_SDL=2
     -oChip8Wasm.html
     -sDISABLE_EXCEPTION_CATCHING=0
-    -sEXPORTED_FUNCTIONS=_main,_load_rom
+    -sEXPORTED_FUNCTIONS=_main,_load_rom,_get_cpu_info
     -sEXPORTED_RUNTIME_METHODS=ccall,cwrap
     --shell-file ${CMAKE_SOURCE_DIR}/src/Chip8Wasm/template.html
     )

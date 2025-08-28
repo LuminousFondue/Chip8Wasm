@@ -4,6 +4,7 @@ out/
 bin/
 lib/
 docs/
+chip8Wasm/
 
 # CMake generated files
 CMakeFiles/
