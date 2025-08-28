@@ -82,6 +82,7 @@ endif()
 # WASM
 # -----------------------------------------------------------------------------
 if(BUILD_WASM)
+
     add_executable(
         Chip8Wasm
         src/Chip8Wasm/main.cpp
@@ -102,7 +103,16 @@ if(BUILD_WASM)
     --bind
     -sUSE_SDL=2
     -oChip8Wasm.html
-)
+    --preload-file roms/6-keypad.ch8
+    )
+        
+    # Copy the 'roms' folder to the build directory
+    add_custom_command(TARGET Chip8Wasm PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/roms
+            $<TARGET_FILE_DIR:Chip8Wasm>/roms
+        COMMENT "Copying roms folder to build directory"
+    )
 endif()
 
 # -----------------------------------------------------------------------------
