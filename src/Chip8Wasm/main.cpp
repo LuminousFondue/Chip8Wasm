@@ -16,10 +16,18 @@
 chip8core::Chip8 chip8;
 Chip8Display     display(64, 32, 10);
 Chip8Input       input;
-Chip8Audio       audio;
+Chip8Audio*      audio          = nullptr;
 bool             running        = true;
 bool             romLoaded      = false;
 const int        cyclesPerFrame = 10;
+
+void initAudio()
+{
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) >= 0)
+    {
+        audio = new Chip8Audio();
+    }
+}
 
 extern "C"
 {
@@ -28,6 +36,7 @@ extern "C"
     {
         romLoaded = Chip8ROMLoader::loadROM(filename, chip8);
         spdlog::info("ROM loaded: {}", filename);
+        initAudio();
     }
 }
 
@@ -45,7 +54,7 @@ bool emulationIteration(double time, void* userData)
         display.render(chip8.getGraphics());
 
         // Play audio
-        audio.processAudio(chip8.getSoundTimer());
+        audio->processAudio(chip8.getSoundTimer());
     }
 
     return EM_TRUE;
@@ -53,10 +62,6 @@ bool emulationIteration(double time, void* userData)
 
 int main()
 {
-    if (SDL_Init(SDL_INIT_AUDIO) < 0)
-    {
-        return -1;
-    }
     spdlog::set_level(spdlog::level::debug);
     spdlog::info("Application Started");
 

@@ -1,7 +1,10 @@
 #include "Chip8Emulator/Chip8Audio.h"
 
+#include <spdlog/spdlog.h>
+
 Chip8Audio::Chip8Audio() : device_(0), playing_(false), phase_(0)
 {
+    spdlog::debug("Initializing Chip8Audio");
     SDL_zero(spec_);
     spec_.freq     = 44100;
     spec_.format   = AUDIO_U8;
@@ -11,8 +14,10 @@ Chip8Audio::Chip8Audio() : device_(0), playing_(false), phase_(0)
     spec_.userdata = this;
 
     device_ = SDL_OpenAudioDevice(nullptr, 0, &spec_, nullptr, 0);
+    spdlog::debug("Device: {}", device_);
     if (device_ == 0)
     {
+        spdlog::debug("Error: {}", SDL_GetError());
         SDL_Log("Failed to open audio: %s", SDL_GetError());
     }
 }
@@ -26,13 +31,19 @@ Chip8Audio::~Chip8Audio()
 void Chip8Audio::processAudio(const chip8core::Chip8Timer& soundTimer)
 {
     if (soundTimer.getValue() > 0)
+    {
+        spdlog::debug("BEEP");
         play();
+    }
     else
+    {
         stop();
+    }
 }
 
 void Chip8Audio::play()
 {
+
     playing_ = true;
     if (device_ != 0)
         SDL_PauseAudioDevice(device_, 0);
