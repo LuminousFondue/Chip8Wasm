@@ -18,21 +18,35 @@ Chip8Display     display(64, 32, 10);
 Chip8Input       input;
 Chip8Audio       audio;
 bool             running        = true;
+bool             romLoaded      = false;
 const int        cyclesPerFrame = 10;
+
+extern "C"
+{
+    EMSCRIPTEN_KEEPALIVE
+    void load_rom(const char* filename)
+    {
+        romLoaded = Chip8ROMLoader::loadROM(filename, chip8);
+        spdlog::info("ROM loaded: {}", filename);
+    }
+}
 
 bool emulationIteration(double time, void* userData)
 {
-    // Poll for input
-    input.pollEvents(chip8.getInput(), running);
+    if (romLoaded)
+    {
+        // Poll for input
+        input.pollEvents(chip8.getInput(), running);
 
-    // Cycle Chip8
-    chip8.cycle();
+        // Cycle Chip8
+        chip8.cycle();
 
-    // Render display
-    display.render(chip8.getGraphics());
+        // Render display
+        display.render(chip8.getGraphics());
 
-    // Play audio
-    audio.processAudio(chip8.getSoundTimer());
+        // Play audio
+        audio.processAudio(chip8.getSoundTimer());
+    }
 
     return EM_TRUE;
 }
@@ -45,7 +59,6 @@ int main()
     }
     spdlog::set_level(spdlog::level::debug);
     spdlog::info("Application Started");
-    Chip8ROMLoader::loadROM("roms/6-keypad.ch8", chip8);
 
     emscripten_request_animation_frame_loop(emulationIteration, 0);
 

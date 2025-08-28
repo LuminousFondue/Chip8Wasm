@@ -103,7 +103,10 @@ if(BUILD_WASM)
     --bind
     -sUSE_SDL=2
     -oChip8Wasm.html
-    --preload-file roms/6-keypad.ch8
+    -sDISABLE_EXCEPTION_CATCHING=0
+    -sEXPORTED_FUNCTIONS=_main,_load_rom
+    -sEXPORTED_RUNTIME_METHODS=ccall,cwrap
+    --shell-file ${CMAKE_SOURCE_DIR}/src/Chip8Wasm/template.html
     )
         
     # Copy the 'roms' folder to the build directory
